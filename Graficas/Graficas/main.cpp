@@ -5,13 +5,13 @@
 //  Created by Alberto Cols and Oriana Gomez on 28/11/13.
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
+#include <GL/glew.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #elif _WIN64
-#include <GLUT/freeglut.h>
+#include <GLUT\freeglut.h>
 #endif
 
-#include <GL/glew.h>
 #include <iostream>
 #include "block.h"
 #include "platform.h"
