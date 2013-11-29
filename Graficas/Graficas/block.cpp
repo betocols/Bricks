@@ -20,7 +20,7 @@ Block::~Block(){
     
 }
 
-void Block::initBlock(int x, int y, int t, int b){
+void Block::initBlock(float x, float y, int t, int b){
     xpos = x;
     ypos = y;
     type = t;
@@ -157,9 +157,9 @@ void Block::drawBlock(){
         drawUndamaged();
     } else {
         glColor4f(1.0, 0.0, 0.0, 1.0);
-//        if (life == 2)
-//            drawUndamaged();
-//        else
+        if (life == 2)
+            drawUndamaged();
+        else
             drawDamaged();
     }
 }

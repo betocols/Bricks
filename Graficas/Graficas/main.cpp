@@ -163,11 +163,13 @@ int isBon(int e){
     if (j == 5)
         return 0;
     
-    r = j % 2;
+    r = bonus[j] % 2;
     if (r == 0)
         return r + 2;
     else if (r == 1)
         return r;
+    
+    return 0;
 }
 
 void render(){
@@ -183,8 +185,6 @@ void render(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_LINE_SMOOTH );
     glEnable( GL_POINT_SMOOTH );
-    
-//    stick.stickMan(side, rot, paint, section);
     
     glDisable(GL_BLEND);
     glDisable(GL_LINE_SMOOTH);
@@ -207,12 +207,12 @@ void keyboard(unsigned char key, int x, int y){
 //        case GLUT_KEY_LEFT:
         case 'a':
         case 'A':
-            p.setX(-1.0);
+            p.moveX(-0.5);
             break;
 //        case GLUT_KEY_RIGHT:
         case 'd':
         case 'D':
-            p.setX(1.0);
+            p.moveX(0.5);
             break;
             
         case 27:   // escape
@@ -250,10 +250,8 @@ int main (int argc, char** argv) {
     //Blocks Initializing
     for (float x = -9.0; x <= 9.0; x += 3.0) {
         for (float y = 6.0; y > 1.0; y -= 1.0) {
-            
             blocks[i].initBlock(x, y, isSpe(i), isBon(i));
             i++;
-            
         }
     }
     

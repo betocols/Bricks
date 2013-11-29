@@ -46,8 +46,11 @@ int Platform::getX() {
     return xpos;
 }
 
-void Platform::setX(int x) {
-    xpos += x;
+void Platform::moveX(float x) {
+    float t = xpos + x;
+    if ((t >= -11.0) && (t <= 11.0)) {
+        xpos += x;
+    }
 }
 
 int Platform::getBonus() {

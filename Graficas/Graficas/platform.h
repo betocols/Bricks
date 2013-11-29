@@ -21,7 +21,7 @@ public:
     int getBonus();
     void setBonus(int b);
     int getX();
-    void setX(int x);
+    void moveX(float x);
     
 private:
 

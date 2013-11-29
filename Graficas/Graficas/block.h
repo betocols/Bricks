@@ -20,7 +20,7 @@ public:
     
     //Draws the block
     void drawBlock();
-    void initBlock(int x, int y, int t, int b);
+    void initBlock(float x, float y, int t, int b);
     float getX();
 
 private:
