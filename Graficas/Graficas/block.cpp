@@ -169,7 +169,57 @@ void Block::drawBlock(){
     }
 }
 
-float Block::
-getX() {
+float Block::getX() {
     return xpos;
 }
+
+void Block::boom() {
+
+	float vExp[5][10];
+	float ep0, ep1, p0, p1, t, ratio;
+	ratio = 1.0;
+
+	vExp[0][0] = sin(0.15);
+	vExp[1][0] = cos(0.15);
+
+	vExp[0][1] = sin(0.25);
+	vExp[1][1] = cos(0.25);
+
+	vExp[0][2] = sin(0.49);
+	vExp[1][2] = cos(0.49);
+
+	vExp[0][3] = sin(0.90);
+	vExp[1][3] = cos(0.90);
+
+	vExp[0][4] = sin(0.01);
+	vExp[1][4] = cos(0.01);
+
+	vExp[0][5] = sin(0.32);
+	vExp[1][5] = cos(0.32);
+
+	vExp[0][6] = sin(0.45);
+	vExp[1][6] = cos(0.45);
+
+	vExp[0][7] = sin(0.88);
+	vExp[1][7] = cos(0.88);
+
+	vExp[0][8] = sin(0.73);
+	vExp[1][8] = cos(0.73);
+
+	vExp[0][9] = sin(0.64);
+	vExp[1][9] = cos(0.64);
+
+	glBegin(GL_LINE_LOOP); 
+		for (int i= 0; i<10; i++) {  
+			glVertex3f( xpos + vExp[1][i] * ratio, ypos + vExp[0][i] * ratio, 0.0 ); 
+		} 
+	glEnd();
+
+	//velocidad
+
+	//ep0 = (1-t)*p0 + t*p1;
+	//ep1 = (1-t)*p0 + t*p1;
+
+	//t+=0.2;
+}
+
