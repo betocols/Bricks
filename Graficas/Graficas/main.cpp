@@ -6,15 +6,12 @@
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
 #ifdef __APPLE__
-    #include <GL/glew.h>
-    #include <GLUT/glut.h>
-    #include <OpenGL/OpenGL.h>
+#include <GLUT/glut.h>
 #elif _WIN64
-    #include <GL\glew.h>
-    #include <GLUT/glut.h>
-    #include <OpenGL/OpenGL.h>
+#include <GLUT/freeglut.h>
 #endif
 
+#include <GL/glew.h>
 #include <iostream>
 #include "block.h"
 #include "platform.h"
