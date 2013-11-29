@@ -23,6 +23,7 @@ public:
     void initBlock(float x, float y, int t, int b);
     float getX();
 	void boom();
+    void changeLife(int l);
 
 private:
     void drawUndamaged();

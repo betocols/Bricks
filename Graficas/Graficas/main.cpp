@@ -203,10 +203,8 @@ void render(){
     for(i = 0; i < 35; i++) {
         blocks[i].drawBlock();
     }
+    
     b.drawBall(0.0, 0.0, 0.0);
-//    b.drawBall(0.0, 0.0, 0.0);
-//        b.drawBall(0.0, 0.0, 0.0);
-//        b.drawBall(0.0, 0.0, 0.0);
     glutSwapBuffers();
 }
 
@@ -233,7 +231,9 @@ void keyboard(unsigned char key, int x, int y){
         case 'D':
             b.changeR(45.0);
             break;
-            
+        case 'b':
+            blocks[0].changeLife(-1);
+            break;
         case 27:   // escape
             exit(0);
             break;
@@ -241,6 +241,7 @@ void keyboard(unsigned char key, int x, int y){
         default:
             break;
     }
+    
     render();
 }
 

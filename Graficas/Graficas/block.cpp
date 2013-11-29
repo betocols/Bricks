@@ -142,8 +142,11 @@ void Block::drawDamaged() {
 
 void Block::drawBlock(){
 
-    if (life == 0)
+    if (life == 0) {
+        boom();
+        life--;
         return;
+    }
     
     glPointSize(10.0);
     if (bonus == 1) {
@@ -221,5 +224,9 @@ void Block::boom() {
 	//ep1 = (1-t)*p0 + t*p1;
 
 	//t+=0.2;
+}
+
+void Block::changeLife(int l) {
+    life -= l;
 }
 
