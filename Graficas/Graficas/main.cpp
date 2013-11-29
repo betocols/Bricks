@@ -5,10 +5,16 @@
 //  Created by Alberto Cols and Oriana Gomez on 28/11/13.
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
+#ifdef __APPLE__
+    #include <GL/glew.h>
+    #include <GLUT/glut.h>
+    #include <OpenGL/OpenGL.h>
+#elif _WIN64
+    #include <GL\glew.h>
+    #include <GLUT/glut.h>
+    #include <OpenGL/OpenGL.h>
+#endif
 
-#include <GL/glew.h>
-#include <GLUT/glut.h>
-#include <OpenGL/OpenGL.h>
 #include <iostream>
 #include "block.h"
 #include "platform.h"
@@ -58,37 +64,37 @@ void gameset() {
     glBegin(GL_LINES);
     glColor4f(0.0, 1.0, 0.0, 1.0);
     //Left Column
-    glVertex3f(-12.0, -9.0, 0.0);
-    glVertex3f(-12.5, -9.0, 0.0);
+    glVertex3f(-10.0, -9.0, 0.0);
+    glVertex3f(-10.5, -9.0, 0.0);
     
-    glVertex3f(-12.0, -9.0, 0.0);
-    glVertex3f(-12.0, 9.0, 0.0);
+    glVertex3f(-10.0, -9.0, 0.0);
+    glVertex3f(-10.0, 9.0, 0.0);
     
-    glVertex3f(-12.5, -9.0, 0.0);
-    glVertex3f(-12.5, 9.5, 0.0);
+    glVertex3f(-10.5, -9.0, 0.0);
+    glVertex3f(-10.5, 9.5, 0.0);
     
-    glVertex3f(-12.0, 9.0, 0.0);
-    glVertex3f(-12.5, 9.5, 0.0);
+    glVertex3f(-10.0, 9.0, 0.0);
+    glVertex3f(-10.5, 9.5, 0.0);
     
     //Top Column
-    glVertex3f(-12.5, 9.5, 0.0);
-    glVertex3f(12.5, 9.5, 0.0);
+    glVertex3f(-10.5, 9.5, 0.0);
+    glVertex3f(10.5, 9.5, 0.0);
     
-    glVertex3f(-12.0, 9.0, 0.0);
-    glVertex3f(12.0, 9.0, 0.0);
+    glVertex3f(-10.0, 9.0, 0.0);
+    glVertex3f(10.0, 9.0, 0.0);
     
     //Right Column
-    glVertex3f(12.0, -9.0, 0.0);
-    glVertex3f(12.0, 9.0, 0.0);
+    glVertex3f(10.0, -9.0, 0.0);
+    glVertex3f(10.0, 9.0, 0.0);
     
-    glVertex3f(12.0, 9.0, 0.0);
-    glVertex3f(12.5, 9.5, 0.0);
+    glVertex3f(10.0, 9.0, 0.0);
+    glVertex3f(10.5, 9.5, 0.0);
     
-    glVertex3f(12.5, -9.0, 0.0);
-    glVertex3f(12.5, 9.5, 0.0);
+    glVertex3f(10.5, -9.0, 0.0);
+    glVertex3f(10.5, 9.5, 0.0);
     
-    glVertex3f(12.0, -9.0, 0.0);
-    glVertex3f(12.5, -9.0, 0.0);
+    glVertex3f(10.0, -9.0, 0.0);
+    glVertex3f(10.5, -9.0, 0.0);
     
     glEnd();
     //End GameBorder
@@ -248,7 +254,7 @@ int main (int argc, char** argv) {
     //Gets the special blocks
     initRands();
     //Blocks Initializing
-    for (float x = -9.0; x <= 9.0; x += 3.0) {
+    for (float x = -7.5; x <= 7.5; x += 2.5) {
         for (float y = 6.0; y > 1.0; y -= 1.0) {
             blocks[i].initBlock(x, y, isSpe(i), isBon(i));
             i++;

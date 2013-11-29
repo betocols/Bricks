@@ -6,8 +6,16 @@
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
 
-#include <GL/glew.h>
-#include <GLUT/GLUT.h>
+#ifdef __APPLE__
+    #include <GL/glew.h>
+    #include <GLUT/glut.h>
+    #include <OpenGL/OpenGL.h>
+#elif _WIN64
+    #include <GL\glew.h>
+    #include <GLUT/glut.h>
+    #include <OpenGL/OpenGL.h>
+#endif
+
 #include <math.h>
 #include <stdio.h>
 #include "block.h"
