@@ -19,8 +19,13 @@ public:
     Ball();     //Constructor
     ~Ball();    //Destructor
     
-    void drawBall(float x, float y);
+    void drawBall(float x, float y, float r);
     float getSpeed();
-    void setSpeed(int reset);
+    void changeSpeed(int s);
     
+    float getY();
+    float getX();
+    
+    void changeR(float r);
+    float getR();
 };

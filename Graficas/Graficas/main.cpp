@@ -203,7 +203,10 @@ void render(){
     for(i = 0; i < 35; i++) {
         blocks[i].drawBlock();
     }
-    b.drawBall(0.0, 0.0);
+    b.drawBall(0.0, 0.0, 0.0);
+//    b.drawBall(0.0, 0.0, 0.0);
+//        b.drawBall(0.0, 0.0, 0.0);
+//        b.drawBall(0.0, 0.0, 0.0);
     glutSwapBuffers();
 }
 
@@ -211,14 +214,24 @@ void keyboard(unsigned char key, int x, int y){
     switch(key)
     {
 //        case GLUT_KEY_LEFT:
-        case 'a':
-        case 'A':
+        case 'j':
+        case 'J':
             p.moveX(-0.5);
             break;
 //        case GLUT_KEY_RIGHT:
+        case 'l':
+        case 'L':
+            p.moveX(0.5);
+            break;
+            //        case GLUT_KEY_RIGHT:
+        case 'a':
+        case 'A':
+            b.changeR(-45.0);
+            break;
+            //        case GLUT_KEY_RIGHT:
         case 'd':
         case 'D':
-            p.moveX(0.5);
+            b.changeR(45.0);
             break;
             
         case 27:   // escape
@@ -229,6 +242,15 @@ void keyboard(unsigned char key, int x, int y){
             break;
     }
     render();
+}
+
+void TimeEvent(int te)
+{
+    
+    b.drawBall(0.0, 0.1, 0.0);
+	glutPostRedisplay();
+	glutTimerFunc(100, TimeEvent, 1);
+
 }
 
 int main (int argc, char** argv) {
@@ -261,6 +283,7 @@ int main (int argc, char** argv) {
         }
     }
     
+    glutTimerFunc( 10, TimeEvent, 1);
     glutMainLoop();
     return 0;
     

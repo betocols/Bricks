@@ -17,35 +17,69 @@
 
 Ball::Ball(){
     xpos = 0.0;
-    ypos = -8.5;
-    speed = 1.0;
-    rot = 0.0;
+    ypos = -8.25;
+    speed = 0.1;
+    rot = 90.0;
     
 }     //Constructor
+
 Ball::~Ball(){
 }    //Destructor
 
-void Ball::drawBall(float x, float y){
-
+void Ball::drawBall(float x, float y, float r){
     double radio, PI;
     radio = 0.24;
     PI = 3.1416;
+    
+    glPushMatrix();
+
+    glTranslated(xpos, ypos, 0.0);
+
+    glBegin(GL_LINE_LOOP);
+
+
+    glRotated(rot, 0.0, 0.0, 1.0);
+
+    xpos += speed*cosf(rot*PI/180);
+    ypos += speed*sinf(rot*PI/180);
+
+    glTranslated(0.0, 1.0, 0.0);
     
     glBegin(GL_LINE_LOOP);
     for (double i = 0; i < 2 * PI; i += PI / 12) {  // +1 para cerrar
         glVertex3f( cos(i) * radio, sin(i) * radio, 0.0 );
     }
     glEnd();
+    
+    glPopMatrix();
 }
 
 float Ball::getSpeed(){
     return speed;
 }
 
-void Ball::setSpeed(int reset){
-
-    if (reset == 1)
+void Ball::changeSpeed(int s){
+    
+    if (s == 1)
         speed = 1.0;
-    else if (reset == 0)
+    else if (s == 0)
         speed *= 1.10;
 }
+
+float Ball::getY() {
+    return ypos;
+}
+
+float Ball::getX() {
+    return ypos;
+}
+
+float Ball::getR(){
+    return rot;
+}
+
+void Ball::changeR(float r) {
+    rot += r;
+}
+
+
