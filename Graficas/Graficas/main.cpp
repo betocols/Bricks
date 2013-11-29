@@ -23,9 +23,9 @@ using namespace std;
 #define DEF_floorGridXSteps 10.0
 #define DEF_floorGridZSteps 10.0
 Block blocks[35];                   //Array of blocks
-Platform p;
 int special[7];                     //Array to obtain the number of the especial blocks
 int bonus[5];                       //Array to obtain the number of the bonus blocks
+Platform p;
 int i = 0;
 
 void changeViewport(int w, int h) {
@@ -235,7 +235,7 @@ int main (int argc, char** argv) {
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     
-    glutInitWindowSize(1200,800);
+    glutInitWindowSize(900,700);
     
     glutCreateWindow("Proyecto 2");
     
