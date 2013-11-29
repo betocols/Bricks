@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A41DBFC91848640100AC78E5 /* platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A41DBFC71848640100AC78E5 /* platform.cpp */; };
 		A4C8AFBC1847DEAC00EF4E91 /* block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4C8AFBA1847DEAC00EF4E91 /* block.cpp */; };
+		A4CDF86618490AD1001085A0 /* ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4CDF86418490AD1001085A0 /* ball.cpp */; };
 		A4E9C45618295DC00006B69A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4E9C45518295DC00006B69A /* main.cpp */; };
 		A4E9C45818295DC00006B69A /* Graficas.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4E9C45718295DC00006B69A /* Graficas.1 */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,8 @@
 		A41DBFC81848640100AC78E5 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		A4C8AFBA1847DEAC00EF4E91 /* block.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = block.cpp; sourceTree = "<group>"; };
 		A4C8AFBB1847DEAC00EF4E91 /* block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
+		A4CDF86418490AD1001085A0 /* ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ball.cpp; sourceTree = "<group>"; };
+		A4CDF86518490AD1001085A0 /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
 		A4E9C45218295DC00006B69A /* Graficas */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Graficas; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4E9C45518295DC00006B69A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A4E9C45718295DC00006B69A /* Graficas.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Graficas.1; sourceTree = "<group>"; };
@@ -72,6 +75,8 @@
 				A4C8AFBB1847DEAC00EF4E91 /* block.h */,
 				A41DBFC71848640100AC78E5 /* platform.cpp */,
 				A41DBFC81848640100AC78E5 /* platform.h */,
+				A4CDF86418490AD1001085A0 /* ball.cpp */,
+				A4CDF86518490AD1001085A0 /* ball.h */,
 			);
 			path = Graficas;
 			sourceTree = "<group>";
@@ -127,6 +132,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4CDF86618490AD1001085A0 /* ball.cpp in Sources */,
 				A4E9C45618295DC00006B69A /* main.cpp in Sources */,
 				A41DBFC91848640100AC78E5 /* platform.cpp in Sources */,
 				A4C8AFBC1847DEAC00EF4E91 /* block.cpp in Sources */,

@@ -16,6 +16,7 @@
 #include <iostream>
 #include "block.h"
 #include "platform.h"
+#include "ball.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ Block blocks[35];                   //Array of blocks
 int special[7];                     //Array to obtain the number of the especial blocks
 int bonus[5];                       //Array to obtain the number of the bonus blocks
 Platform p;
+Ball b;
 int i = 0;
 
 void changeViewport(int w, int h) {
@@ -201,7 +203,7 @@ void render(){
     for(i = 0; i < 35; i++) {
         blocks[i].drawBlock();
     }
-
+    b.drawBall(0.0, 0.0);
     glutSwapBuffers();
 }
 
