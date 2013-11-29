@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
 #include <GL/glew.h>
+#include <ctime>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
-#elif _WIN64
-#include <GLUT\freeglut.h>
+#elif _WIN32
+#include <GL/freeglut.h>
 #endif
 
 #include <iostream>

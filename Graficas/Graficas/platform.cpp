@@ -8,8 +8,8 @@
 #include <GL/glew.h>
 #ifdef __APPLE__
     #include <GLUT/glut.h>
-#elif _WIN64
-    #include <GLUT/freeglut.h>
+#elif _WIN32
+    #include <GL/freeglut.h>
 #endif
 
 #include <math.h>
