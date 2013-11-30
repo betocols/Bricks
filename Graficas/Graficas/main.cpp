@@ -228,11 +228,17 @@ void keyboard(unsigned char key, int x, int y){
         case 'b':
             blocks[0].changeLife(-1);
             break;
-        case 'p':
-            p.changeBonus(1.05);
+        case '2':
+            p.changeSize(1.05);
             break;
-        case 'o':
-            p.changeBonus(1.0);
+        case '1':
+            p.changeSize(1.0);
+            break;
+        case '3':
+            b.changeSpeed(1.0);
+            break;
+        case '4':
+            b.changeSpeed(1.10);
             break;
         case 27:   // escape
             exit(0);

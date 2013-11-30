@@ -7,9 +7,9 @@
 //
 #include <GL/glew.h>
 #ifdef __APPLE__
-    #include <GLUT/glut.h>
+#include <GLUT/glut.h>
 #elif _WIN32
-    #include <GL/freeglut.h>
+#include <GL/freeglut.h>
 #endif
 
 #include <math.h>
@@ -18,7 +18,7 @@
 
 Platform::Platform() {
     xpos = 0.0;
-    bonus = 1.0;
+    size = 1.0;
     life = 3;
 }
 
@@ -26,34 +26,34 @@ Platform::~Platform() {
     
 }
 
-int Platform::getBonus() {
-    return bonus;
+int Platform::getSize() {
+    return size;
 }
 
-void Platform::changeBonus(float b) {
+void Platform::changeSize(float b) {
     float left, right;
-    //Increases the size of the platform
-    if (b == 1.0)
-        bonus = 1.0;
     //Takes the size of the platform back to normal
+    if (b == 1.0)
+        size = 1.0;
+    //Increases the size of the platform
     else {
-        bonus *= 1.05;
+        size *= 1.05;
         
-        //Bonus top is 1.05^5
-        if (bonus > 1.27681)
-            bonus = 1.27681;
+        //size top is 1.05^5
+        if (size > 1.27681)
+            size = 1.27681;
         
-        //If the platform increases it size at one border,
+        //If the platform increases it size next to a border,
         //moves the center so it doesnt pass the border
-        left = xpos - bonus;
-        right = xpos + bonus;
+        left = xpos - size;
+        right = xpos + size;
         if (left <= -10.0)
-            xpos = -10.0 + bonus;
+            xpos = -10.0 + size;
         else if (right >= 10.0)
-            xpos = 10.0 - bonus;
+            xpos = 10.0 - size;
     }
     
-    printf("bonus %f, b %f\n", bonus, b);
+    printf("size %f, b %f\n", size, b);
 }
 
 int Platform::getX() {
@@ -62,21 +62,21 @@ int Platform::getX() {
 
 void Platform::moveX(float x) {
     float t = xpos + x;
-    float left = t - bonus;
-    float right = t + bonus;
-
+    float left = t - size;
+    float right = t + size;
+    
     //If the platform is inside the boundaries of the field
-    if ((t >= -10.0 + bonus) && (t <= 10.0 - bonus)) {
+    if ((t >= -10.0 + size) && (t <= 10.0 - size)) {
         xpos += x;
     }
-
+    
     //If it tries to go outside the boundaries, it takes the platform back
     if (left < -10.0) {
-        xpos = -10.0 + bonus;
-
+        xpos = -10.0 + size;
+        
     } else if (right > 10.0) {
-        xpos = 10.0 - bonus;
-
+        xpos = 10.0 - size;
+        
     }
 }
 
@@ -96,21 +96,21 @@ void Platform::drawPlatform() {
     //Platform
     glBegin(GL_LINES);
     glColor4f(0.0, 0.0, 1.0, 1.0);
-    glVertex3f(xpos-bonus, -9.0, 0.0);
-    glVertex3f(xpos+bonus, -9.0, 0.0);
+    glVertex3f(xpos-size, -9.0, 0.0);
+    glVertex3f(xpos+size, -9.0, 0.0);
     
-    glVertex3f(xpos-bonus, -9.0, 0.0);
-    glVertex3f(xpos-bonus, -8.5, 0.0);
+    glVertex3f(xpos-size, -9.0, 0.0);
+    glVertex3f(xpos-size, -8.5, 0.0);
     
-    glVertex3f(xpos+bonus, -9.0, 0.0);
-    glVertex3f(xpos+bonus, -8.5, 0.0);
+    glVertex3f(xpos+size, -9.0, 0.0);
+    glVertex3f(xpos+size, -8.5, 0.0);
     
-    glVertex3f(xpos-bonus, -8.5, 0.0);
-    glVertex3f(xpos+bonus, -8.5, 0.0);
+    glVertex3f(xpos-size, -8.5, 0.0);
+    glVertex3f(xpos+size, -8.5, 0.0);
     
     glEnd();
     //End Platform
-
+    
 }
 
 

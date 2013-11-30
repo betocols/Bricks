@@ -8,7 +8,7 @@
 
 class Platform {
     
-    float bonus;      //0 = Normal platform / 1 = Bonus platform size / 2 = Bonus platform speed
+    float size;      //1.0 = Normal platform
     int life;       //Remaining life
     float xpos;     //X position
     
@@ -16,18 +16,18 @@ public:
     Platform();  //Constructor
     ~Platform(); //Destructor
     
-    int getBonus();
-    void changeBonus(float b);
+    int getSize();
+    void changeSize(float b);
     
     int getX();
     void moveX(float x);
-
+    
     int getLife();
     void changeLife(int l);
     
     //Draws the block
     void drawPlatform();
-
+    
 private:
-
+    
 };

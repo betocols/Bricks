@@ -20,8 +20,9 @@ public:
     ~Ball();    //Destructor
     
     void drawBall(float x, float y, float r);
+
     float getSpeed();
-    void changeSpeed(int s);
+    void changeSpeed(float s);
     
     float getY();
     float getX();
