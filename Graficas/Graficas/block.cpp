@@ -147,7 +147,7 @@ void Block::drawBlock(){
     
     if (life == 0) {
 		//if (type == 1)
-			boom();
+		glutTimerFunc(500,boom,0);
         life--;
         return;
     }
@@ -243,8 +243,8 @@ void Block::boom(int value) {
 
 	}
 
-	//glutTimerFunc(500,boom,0);
-	//glutPostRedisplay();
+	glutTimerFunc(500,boom,0);
+	glutPostRedisplay();
 }
 
 int Block::getLife() {
