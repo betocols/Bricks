@@ -146,7 +146,7 @@ void Block::drawBlock(){
         return;
     
     if (life == 0) {
-//        boom();
+		boom();
         life--;
         return;
     }
@@ -185,48 +185,66 @@ void Block::boom() {
 	float ep0, ep1, p0, p1, t, ratio;
 	ratio = 1.0;
 
-	vExp[0][0] = sin(0.15);
-	vExp[1][0] = cos(0.15);
+	vExp[0][0] = sin(gradToRad(15));
+	vExp[1][0] = cos(gradToRad(15));
 
-	vExp[0][1] = sin(0.25);
-	vExp[1][1] = cos(0.25);
+	vExp[0][1] = sin(gradToRad(255));
+	vExp[1][1] = cos(gradToRad(255));
 
-	vExp[0][2] = sin(0.49);
-	vExp[1][2] = cos(0.49);
+	vExp[0][2] = sin(gradToRad(127));
+	vExp[1][2] = cos(gradToRad(127));
 
-	vExp[0][3] = sin(0.90);
-	vExp[1][3] = cos(0.90);
+	vExp[0][3] = sin(gradToRad(90));
+	vExp[1][3] = cos(gradToRad(90));
 
-	vExp[0][4] = sin(0.01);
-	vExp[1][4] = cos(0.01);
+	vExp[0][4] = sin(gradToRad(180));
+	vExp[1][4] = cos(gradToRad(180));
 
-	vExp[0][5] = sin(0.32);
-	vExp[1][5] = cos(0.32);
+	vExp[0][5] = sin(gradToRad(270));
+	vExp[1][5] = cos(gradToRad(270));
 
-	vExp[0][6] = sin(0.45);
-	vExp[1][6] = cos(0.45);
+	vExp[0][6] = sin(gradToRad(45));
+	vExp[1][6] = cos(gradToRad(-45));
 
-	vExp[0][7] = sin(0.88);
-	vExp[1][7] = cos(0.88);
+	vExp[0][7] = sin(gradToRad(325));
+	vExp[1][7] = cos(gradToRad(325));
 
-	vExp[0][8] = sin(0.73);
-	vExp[1][8] = cos(0.73);
+	vExp[0][8] = sin(gradToRad(73));
+	vExp[1][8] = cos(gradToRad(73));
 
-	vExp[0][9] = sin(0.64);
-	vExp[1][9] = cos(0.64);
+	vExp[0][9] = sin(gradToRad(225));
+	vExp[1][9] = cos(gradToRad(225));
 
-	glBegin(GL_LINE_LOOP); 
-		for (int i= 0; i<10; i++) {  
-			glVertex3f( xpos + vExp[1][i] * ratio, ypos + vExp[0][i] * ratio, 0.0 ); 
-		} 
-	glEnd();
+	t = 0.0;
+	float cxR, cyR;
+	cxR = xpos;
+	cyR= ypos;
 
-	//velocidad
+	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
 
-	//ep0 = (1-t)*p0 + t*p1;
-	//ep1 = (1-t)*p0 + t*p1;
+	glPushMatrix();
 
-	//t+=0.2;
+	for(int i=0; i<10; i++){
+
+		printf("Entre en el for\n");
+
+		glPointSize(5.0);
+		glBegin(GL_POINTS); 
+			for (int j= 0; j<10; j++) {  
+				glVertex3f( cxR + vExp[1][j] * ratio, cyR + vExp[0][j] * ratio, 0.0 ); 
+			} 
+		glEnd();
+
+		t += 0.2;
+		cxR = t*vExp[1][i] + (1-t)* (0);
+		cyR = t*vExp[0][i] + (1-t)* (0);
+
+		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
+
+	} 
+
+	glPopMatrix();
+
 }
 
 int Block::getLife() {
@@ -237,3 +255,10 @@ void Block::changeLife(int l) {
     life--;
 }
 
+float Block::gradToRad(int g) {
+	int g0;
+	float rad, PI;
+	PI = 3.1416;
+	rad = g*PI/180;
+	return rad;
+}

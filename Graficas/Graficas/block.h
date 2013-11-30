@@ -29,5 +29,6 @@ public:
 private:
     void drawUndamaged();
     void drawDamaged();
+	float gradToRad(int g);
     
 };
