@@ -5,7 +5,6 @@
 //  Created by Alberto Cols on 29/11/13.
 //  Copyright (c) 2013 Alberto Cols. All rights reserved.
 //
-
 class Platform {
     
     float size;      //1.0 = Normal platform
@@ -17,7 +16,8 @@ public:
     ~Platform(); //Destructor
     
     int getSize();
-    void changeSize(float b);
+    void increaseSize();
+    void resetSize();
     
     int getX();
     void moveX(float x);
@@ -25,6 +25,8 @@ public:
     int getLife();
     void changeLife(int l);
     
+    //Determines if the bonus is for platform or for ball
+    int forWho(int who);
     //Draws the block
     void drawPlatform();
     

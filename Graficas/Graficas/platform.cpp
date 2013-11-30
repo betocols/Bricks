@@ -30,30 +30,42 @@ int Platform::getSize() {
     return size;
 }
 
-void Platform::changeSize(float b) {
-    float left, right;
-    //Takes the size of the platform back to normal
-    if (b == 1.0)
-        size = 1.0;
-    //Increases the size of the platform
-    else {
-        size *= 1.05;
-        
-        //size top is 1.05^5
-        if (size > 1.27681)
-            size = 1.27681;
-        
-        //If the platform increases it size next to a border,
-        //moves the center so it doesnt pass the border
-        left = xpos - size;
-        right = xpos + size;
-        if (left <= -10.0)
-            xpos = -10.0 + size;
-        else if (right >= 10.0)
-            xpos = 10.0 - size;
-    }
+int Platform::forWho(int who) {
     
-    printf("size %f, b %f\n", size, b);
+    if  (who == 0)
+        increaseSize();
+    if (who == 1)
+        return 1;
+    
+    return 0;
+}
+
+void Platform::increaseSize() {
+    float left, right;
+    
+    size *= 1.05;
+    
+    //size top is 1.05^5
+    if (size > 1.27681) {
+        size = 1.27681;
+        printf("Platform at top: %f\n", size);
+    } else
+        printf("Platform increased: %f\n", size);
+    
+    //If the platform increases it size next to a border,
+    //moves the center so it doesnt pass the border
+    left = xpos - size;
+    right = xpos + size;
+    if (left <= -10.0)
+        xpos = -10.0 + size;
+    else if (right >= 10.0)
+        xpos = 10.0 - size;
+    
+}
+
+void Platform::resetSize() {
+    size = 1.0;
+    printf("Platform reset: %f\n", size);
 }
 
 int Platform::getX() {

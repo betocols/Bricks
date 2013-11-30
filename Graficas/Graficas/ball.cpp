@@ -58,19 +58,20 @@ float Ball::getSpeed(){
     return speed;
 }
 
-void Ball::changeSpeed(float s){
+void Ball::increaseSpeed(){
     
-    //Reset speed
-    if (s == 1.0)
-        speed = 0.1;
-    //Gets speed bonus
-    else {
-        if (speed*1.1 > 0.161052)
-            return;
-        speed *= 1.1;
+    if (speed*1.1 > 0.161052) {
+        printf("Ball speed at top: %f\n", speed);
+        return;
     }
-    
-    printf("speed: %f\n", speed);
+
+    speed *= 1.1;
+    printf("Ball speed increased: %f\n", speed);
+}
+
+void Ball::resetSpeed() {
+    speed = 0.1;
+    printf("Ball speed reset: %f\n", speed);
 }
 
 float Ball::getY() {
@@ -88,5 +89,3 @@ float Ball::getR(){
 void Ball::changeR(float r) {
     rot += r;
 }
-
-
