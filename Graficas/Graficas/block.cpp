@@ -146,7 +146,8 @@ void Block::drawBlock(){
         return;
     
     if (life == 0) {
-		boom();
+		//if (type == 1)
+			boom();
         life--;
         return;
     }
@@ -179,7 +180,7 @@ float Block::getX() {
     return xpos;
 }
 
-void Block::boom() {
+void Block::boom(int value) {
 
 	float vExp[5][10];
 	float ep0, ep1, p0, p1, t, ratio;
@@ -222,29 +223,28 @@ void Block::boom() {
 
 	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
 
-	glPushMatrix();
-
 	for(int i=0; i<10; i++){
 
 		printf("Entre en el for\n");
 
 		glPointSize(5.0);
 		glBegin(GL_POINTS); 
-			for (int j= 0; j<10; j++) {  
-				glVertex3f( cxR + vExp[1][j] * ratio, cyR + vExp[0][j] * ratio, 0.0 ); 
-			} 
+			//for (int j= 0; j<10; j++) {  
+				glVertex3f( cxR + vExp[1][i] * ratio, cyR + vExp[0][i] * ratio, 0.0 ); 
+			//}
 		glEnd();
 
 		t += 0.2;
-		cxR = t*vExp[1][i] + (1-t)* (0);
-		cyR = t*vExp[0][i] + (1-t)* (0);
+
+		cxR = xpos + t*vExp[1][i] + (1-t)* vExp[1][i+1];
+		cyR = ypos + t*vExp[0][i] + (1-t)* vExp[0][i+1];
 
 		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
 
-	} 
+	}
 
-	glPopMatrix();
-
+	//glutTimerFunc(500,boom,0);
+	//glutPostRedisplay();
 }
 
 int Block::getLife() {

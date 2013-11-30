@@ -22,7 +22,7 @@ public:
     void drawBlock();
     void initBlock(float x, float y, int t, int b);
     float getX();
-	void boom();
+	void boom(int value);
     void changeLife(int l);
     int getLife();
 
