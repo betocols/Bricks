@@ -159,7 +159,6 @@ int isSpe(int e){
 
 //Determines wether the number is special or not
 int isBon(int e){
-    int r;
     int j;
     
     for(j = 0; j < 5; j++)
@@ -228,17 +227,17 @@ void keyboard(unsigned char key, int x, int y){
         case 'b':
             blocks[0].changeLife(-1);
             break;
-        case '2':
-            p.changeSize(1.05);
-            break;
         case '1':
-            p.changeSize(1.0);
+            p.resetSize();
+            break;
+        case '2':
+            p.increaseSize();
             break;
         case '3':
-            b.changeSpeed(1.0);
+                b.resetSpeed();
             break;
         case '4':
-            b.changeSpeed(1.10);
+                b.increaseSpeed();
             break;
         case 27:   // escape
             exit(0);

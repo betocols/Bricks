@@ -22,7 +22,8 @@ public:
     void drawBall(float x, float y, float r);
 
     float getSpeed();
-    void changeSpeed(float s);
+    void increaseSpeed();
+    void resetSpeed();
     
     float getY();
     float getX();
