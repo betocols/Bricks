@@ -169,13 +169,7 @@ int isBon(int e){
     if (j == 5)
         return 0;
     
-    r = bonus[j] % 2;
-    if (r == 0)
-        return r + 2;
-    else if (r == 1)
-        return r;
-    
-    return 0;
+    return rand()% 2 + 1;
 }
 
 void render(){
@@ -233,6 +227,12 @@ void keyboard(unsigned char key, int x, int y){
             break;
         case 'b':
             blocks[0].changeLife(-1);
+            break;
+        case 'p':
+            p.changeBonus(1.05);
+            break;
+        case 'o':
+            p.changeBonus(1.0);
             break;
         case 27:   // escape
             exit(0);

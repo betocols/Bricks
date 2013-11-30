@@ -30,6 +30,4 @@ private:
     void drawUndamaged();
     void drawDamaged();
     
-    
-    
 };
