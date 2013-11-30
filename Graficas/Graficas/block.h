@@ -24,6 +24,7 @@ public:
     float getX();
 	void boom();
     void changeLife(int l);
+    int getLife();
 
 private:
     void drawUndamaged();

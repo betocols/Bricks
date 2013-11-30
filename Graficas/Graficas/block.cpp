@@ -142,8 +142,11 @@ void Block::drawDamaged() {
 
 void Block::drawBlock(){
 
+    if (life < 0)
+        return;
+    
     if (life == 0) {
-        boom();
+//        boom();
         life--;
         return;
     }
@@ -226,7 +229,11 @@ void Block::boom() {
 	//t+=0.2;
 }
 
+int Block::getLife() {
+    return life;
+}
+
 void Block::changeLife(int l) {
-    life -= l;
+    life--;
 }
 
