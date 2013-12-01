@@ -25,10 +25,12 @@ public:
 	void boom(int value);
     void changeLife(int l);
     int getLife();
-
+    
+    float gradToRad(float g);
+    
 private:
     void drawUndamaged();
     void drawDamaged();
-	float gradToRad(int g);
+
     
 };

@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+#include "platform.h"
+#include "block.h"
 
 class Ball {
     float xpos;
@@ -30,4 +32,10 @@ public:
     
     void changeR(float r);
     float getR();
+    
+    void move(int direction);
+    void boing(Platform plat);
+
+private:
+    void initBall();
 };

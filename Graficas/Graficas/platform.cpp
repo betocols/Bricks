@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include "platform.h"
 
+
 Platform::Platform() {
     xpos = 0.0;
     size = 1.0;

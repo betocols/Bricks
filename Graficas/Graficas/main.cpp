@@ -14,8 +14,6 @@
 #endif
 
 #include <iostream>
-#include "block.h"
-#include "platform.h"
 #include "ball.h"
 
 using namespace std;
@@ -183,11 +181,7 @@ void render(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_LINE_SMOOTH );
-    glEnable( GL_POINT_SMOOTH );
-    
-    glDisable(GL_BLEND);
-    glDisable(GL_LINE_SMOOTH);
-    
+    glEnable( GL_POINT_SMOOTH );    
     
     gameset();
     
@@ -254,6 +248,7 @@ void TimeEvent(int te)
 {
     
     b.drawBall(0.0, 0.1, 0.0);
+    b.boing(p);
 	glutPostRedisplay();
 	glutTimerFunc(100, TimeEvent, 1);
 
@@ -282,8 +277,8 @@ int main (int argc, char** argv) {
     //Gets the special blocks
     initRands();
     //Blocks Initializing
-    for (float x = -7.5; x <= 7.5; x += 2.5) {
-        for (float y = 6.0; y > 1.0; y -= 1.0) {
+    for (float x = -8.4; x <= 8.5; x += 2.8) {
+        for (float y = 7.5; y > 1.0; y -= 1.5) {
             blocks[i].initBlock(x, y, isSpe(i), isBon(i));
             i++;
         }
