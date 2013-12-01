@@ -140,16 +140,16 @@ void Block::drawDamaged() {
     
 }
 
-void Block::drawBlock(){
+int Block::drawBlock(){
 
     if (life < 0)
-        return;
+        return -1;
     
     if (life == 0) {
-		//if (type == 1)
-//		glutTimerFunc(500,boom,0);
+		if (type == 1)
+            return -2;
         life--;
-        return;
+        return 0;
     }
     
     glPointSize(10.0);
@@ -174,77 +174,16 @@ void Block::drawBlock(){
         else
             drawDamaged();
     }
+    
+    return life;
 }
 
 float Block::getX() {
-    return xpos;
+   return xpos;
 }
 
-void Block::boom(int value) {
-
-	float vExp[5][10];
-	float ep0, ep1, p0, p1, t, ratio;
-	ratio = 1.0;
-
-//    vExp[0][0] = sin(gradToRad(15.0));
-//    vExp[1][0] = cos(gradToRad(15.0));
-//    
-//    vExp[0][1] = sin(gradToRad(255.0));
-//    vExp[1][1] = cos(gradToRad(255.0));
-//    
-//    vExp[0][2] = sin(gradToRad(127.0));
-//    vExp[1][2] = cos(gradToRad(127.0));
-//    
-//    vExp[0][3] = sin(gradToRad(90.0));
-//    vExp[1][3] = cos(gradToRad(90.0));
-//    
-//    vExp[0][4] = sin(gradToRad(180.0));
-//    vExp[1][4] = cos(gradToRad(180.0));
-//    
-//    vExp[0][5] = sin(gradToRad(270.0));
-//    vExp[1][5] = cos(gradToRad(270.0));
-//    
-//    vExp[0][6] = sin(gradToRad(45.0));
-//    vExp[1][6] = cos(gradToRad(-45.0));
-//    
-//    vExp[0][7] = sin(gradToRad(325.0));
-//    vExp[1][7] = cos(gradToRad(325.0));
-//    
-//    vExp[0][8] = sin(gradToRad(73.0));
-//    vExp[1][8] = cos(gradToRad(73.0));
-//    
-//    vExp[0][9] = sin(gradToRad(225.0));
-//    vExp[1][9] = cos(gradToRad(225.0));
-
-	t = 0.0;
-	float cxR, cyR;
-	cxR = xpos;
-	cyR= ypos;
-
-	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
-
-	for(int i=0; i<10; i++){
-
-		printf("Entre en el for\n");
-
-		glPointSize(5.0);
-		glBegin(GL_POINTS); 
-			//for (int j= 0; j<10; j++) {  
-				glVertex3f( cxR + vExp[1][i] * ratio, cyR + vExp[0][i] * ratio, 0.0 ); 
-			//}
-		glEnd();
-
-		t += 0.2;
-
-		cxR = xpos + t*vExp[1][i] + (1-t)* vExp[1][i+1];
-		cyR = ypos + t*vExp[0][i] + (1-t)* vExp[0][i+1];
-
-		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
-
-	}
-
-//	glutTimerFunc(500,boom,0);
-	glutPostRedisplay();
+float Block::getY() {
+    return ypos;
 }
 
 int Block::getLife() {
@@ -253,10 +192,4 @@ int Block::getLife() {
 
 void Block::changeLife(int l) {
     life--;
-}
-
-float Block::gradToRad(float g) {
-	float rad;
-	rad = g*M_PI/180;
-	return rad;
 }

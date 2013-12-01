@@ -19,14 +19,12 @@ public:
     ~Block(); //Destructor
     
     //Draws the block
-    void drawBlock();
+    int drawBlock();
     void initBlock(float x, float y, int t, int b);
     float getX();
-	void boom(int value);
+    float getY();
     void changeLife(int l);
     int getLife();
-    
-    float gradToRad(float g);
     
 private:
     void drawUndamaged();

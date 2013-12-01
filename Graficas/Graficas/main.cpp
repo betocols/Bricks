@@ -14,6 +14,7 @@
 #endif
 
 #include <iostream>
+#include <math.h>
 #include "ball.h"
 
 using namespace std;
@@ -169,6 +170,85 @@ int isBon(int e){
     return rand()% 2 + 1;
 }
 
+float gradToRad(float g) {
+	float rad;
+	rad = g*M_PI/180;
+	return rad;
+}
+
+void drawBoom(float cxR, float cyR, float vExp[5][10], float ratio) {
+    
+    glPointSize(5.0);
+    glBegin(GL_POINTS);
+    //for (int j= 0; j<10; j++) {
+        glVertex3f( cxR + vExp[1][i] * ratio, cyR + vExp[0][i] * ratio, 0.0 );
+    //}
+    glEnd();
+    
+}
+
+void boom(int value) {
+    
+	float vExp[5][10];
+	float t, ratio;
+	float cxR, cyR;
+    t = 0.0;
+	ratio = 1.0;
+    
+    vExp[0][0] = sin(gradToRad(15.0));
+    vExp[1][0] = cos(gradToRad(15.0));
+    
+    vExp[0][1] = sin(gradToRad(255.0));
+    vExp[1][1] = cos(gradToRad(255.0));
+    
+    vExp[0][2] = sin(gradToRad(127.0));
+    vExp[1][2] = cos(gradToRad(127.0));
+    
+    vExp[0][3] = sin(gradToRad(90.0));
+    vExp[1][3] = cos(gradToRad(90.0));
+    
+    vExp[0][4] = sin(gradToRad(180.0));
+    vExp[1][4] = cos(gradToRad(180.0));
+    
+    vExp[0][5] = sin(gradToRad(270.0));
+    vExp[1][5] = cos(gradToRad(270.0));
+    
+    vExp[0][6] = sin(gradToRad(45.0));
+    vExp[1][6] = cos(gradToRad(-45.0));
+    
+    vExp[0][7] = sin(gradToRad(325.0));
+    vExp[1][7] = cos(gradToRad(325.0));
+    
+    vExp[0][8] = sin(gradToRad(73.0));
+    vExp[1][8] = cos(gradToRad(73.0));
+    
+    vExp[0][9] = sin(gradToRad(225.0));
+    vExp[1][9] = cos(gradToRad(225.0));
+    
+	cxR = blocks[i].getX();
+	cyR= blocks[i].getY();
+    
+	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
+    
+	for(int i=0; i<10; i++){
+        
+		printf("Entre en el for\n");
+        
+        drawBoom(cxR, cyR, vExp, ratio);
+        
+		t += 0.2;
+        
+		cxR = blocks[i].getX() + t*vExp[1][i] + (1-t)* vExp[1][i+1];
+		cyR = blocks[i].getY() + t*vExp[0][i] + (1-t)* vExp[0][i+1];
+        
+		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
+        
+	}
+    
+    glutTimerFunc(500,boom,1);
+	glutPostRedisplay();
+}
+
 void render(){
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -188,7 +268,8 @@ void render(){
     p.drawPlatform();
     
     for(i = 0; i < 35; i++) {
-        blocks[i].drawBlock();
+        if (blocks[i].drawBlock()==-2 || blocks[i].drawBlock()==0)
+            glutTimerFunc(500,boom,0);
     }
     
     b.drawBall(0.0, 0.0, 0.0);
