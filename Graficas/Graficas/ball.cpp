@@ -11,8 +11,10 @@
 #elif _WIN32
 #include <GL/freeglut.h>
 #endif
-#include "ball.h"
+
+#define _USE_MATH_DEFINES
 #include <math.h>
+#include "ball.h"
 
 
 Ball::Ball(){

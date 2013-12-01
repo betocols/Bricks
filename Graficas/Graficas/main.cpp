@@ -13,8 +13,9 @@
 #include <GL/freeglut.h>
 #endif
 
-#include <iostream>
+#define _USE_MATH_DEFINES
 #include <math.h>
+#include <iostream>
 #include "ball.h"
 
 using namespace std;
