@@ -8,6 +8,7 @@
 
 class Block {
 
+    int num;        //Id of the block
     int type;       //0 = Normal block / 0 != Special block
     int bonus;      //0 = Normal block / 1 = Bonus block size / 2 = Bonus block speed
     int life;       //Remaining life
@@ -20,7 +21,7 @@ public:
     
     //Draws the block
     int drawBlock();
-    void initBlock(float x, float y, int t, int b);
+    void initBlock(int num, float x, float y, int t, int b);
     float getX();
     float getY();
     void changeLife(int l);

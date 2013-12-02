@@ -28,7 +28,7 @@ int special[7];                     //Array to obtain the number of the especial
 int bonus[5];                       //Array to obtain the number of the bonus blocks
 Platform p;
 Ball b;
-int i = 0;
+int i = 0, isAboom = 0, x, o = 0;
 
 void changeViewport(int w, int h) {
     
@@ -181,19 +181,21 @@ void drawBoom(float cxR, float cyR, float vExp[5][10], float ratio) {
     
     glPointSize(5.0);
     glBegin(GL_POINTS);
-    //for (int j= 0; j<10; j++) {
-        glVertex3f( cxR + vExp[1][i] * ratio, cyR + vExp[0][i] * ratio, 0.0 );
-    //}
+//    for (int j= 0; j<10; j++) {
+        glVertex3f( cxR + vExp[1][isAboom] * ratio, cyR + vExp[0][isAboom] * ratio, 0.0 );
+//    }
     glEnd();
     
 }
 
+float t=0.0;
 void boom(int value) {
     
 	float vExp[5][10];
-	float t, ratio;
-	float cxR, cyR;
-    t = 0.0;
+//	float t, ratio;
+	float ratio;
+    float cxR, cyR;
+    //t = 0.0;
 	ratio = 1.0;
     
     vExp[0][0] = sin(gradToRad(15.0));
@@ -215,7 +217,7 @@ void boom(int value) {
     vExp[1][5] = cos(gradToRad(270.0));
     
     vExp[0][6] = sin(gradToRad(45.0));
-    vExp[1][6] = cos(gradToRad(-45.0));
+    vExp[1][6] = cos(gradToRad(45.0));
     
     vExp[0][7] = sin(gradToRad(325.0));
     vExp[1][7] = cos(gradToRad(325.0));
@@ -226,28 +228,49 @@ void boom(int value) {
     vExp[0][9] = sin(gradToRad(225.0));
     vExp[1][9] = cos(gradToRad(225.0));
     
-	cxR = blocks[i].getX();
-	cyR= blocks[i].getY();
+	cxR = blocks[isAboom].getX();
+	cyR = blocks[isAboom].getY();
     
 	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
     
+//    t = value * 0.2;
+    
 	for(int i=0; i<10; i++){
         
-		printf("Entre en el for\n");
+//		printf("Entre en el for\n");
+//		cyR = blocks[isAboom].getY() + (t)*vExp[0][i] + (1-t)* vExp[0][i+1];
+//		cxR = blocks[isAboom].getX() + (t)*vExp[1][i] + (1-t)* vExp[1][i+1];
+
+        cyR = blocks[isAboom].getY() + (t)*vExp[0][i]*ratio;
+        cxR = blocks[isAboom].getX() + (t)*vExp[1][i]*ratio;
+
+
+//        drawBoom(cxR, cyR, vExp, ratio);
+        glPointSize(5.0);
+        glBegin(GL_POINTS);
+        glColor3f(0.0, 1.0, 0.0);
+//        for (int j= 0; j<10; j++) {
+              glVertex3f( cxR, cyR, 0.0 );
+//            printf("posX: %f, posY: %f POSICION DIBUJADA\n\n", cxR + vExp[1][i] * ratio, cyR+ vExp[0][i] * ratio);
+//        }
+        glEnd();
         
-        drawBoom(cxR, cyR, vExp, ratio);
+		
         
-		t += 0.2;
-        
-		cxR = blocks[i].getX() + t*vExp[1][i] + (1-t)* vExp[1][i+1];
-		cyR = blocks[i].getY() + t*vExp[0][i] + (1-t)* vExp[0][i+1];
-        
-		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
+
+//		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
         
 	}
     
-    glutTimerFunc(500,boom,1);
-	glutPostRedisplay();
+    glutPostRedisplay();
+//    if (t <= 1.0) {
+//        printf("Entre en el if con value= %d, t= %f\n",value,t);
+//        value++;
+//        glutTimerFunc(100000, boom, value);
+//    }
+    t += 0.1;
+    glutTimerFunc(1000, boom, 0);
+    
 }
 
 void render(){
@@ -269,8 +292,16 @@ void render(){
     p.drawPlatform();
     
     for(i = 0; i < 35; i++) {
-        if (blocks[i].drawBlock()==-2 || blocks[i].drawBlock()==0)
-            glutTimerFunc(500,boom,0);
+        x = blocks[i].drawBlock();
+        if (x==-2 || x==0) {
+            isAboom = i;
+            boom(0);
+//            boom(1);
+//            boom(2);
+//            boom(3);
+//            boom(4);
+//            boom(5);
+        }
     }
     
     b.drawBall(0.0, 0.0, 0.0);
@@ -283,12 +314,12 @@ void keyboard(unsigned char key, int x, int y){
 //        case GLUT_KEY_LEFT:
         case 'j':
         case 'J':
-            p.moveX(-0.5);
+            p.moveX(-1.0);
             break;
 //        case GLUT_KEY_RIGHT:
         case 'l':
         case 'L':
-            p.moveX(0.5);
+            p.moveX(1.0);
             break;
             //        case GLUT_KEY_RIGHT:
         case 'a':
@@ -301,7 +332,7 @@ void keyboard(unsigned char key, int x, int y){
             b.changeR(45.0);
             break;
         case 'b':
-            blocks[0].changeLife(-1);
+            blocks[o++ % 35].changeLife(-1);
             break;
         case '1':
             p.resetSize();
@@ -326,13 +357,11 @@ void keyboard(unsigned char key, int x, int y){
     render();
 }
 
-void TimeEvent(int te)
-{
+void TimeEvent(int value) {
     
-    b.drawBall(0.0, 0.1, 0.0);
     b.boing(p);
 	glutPostRedisplay();
-	glutTimerFunc(100, TimeEvent, 1);
+	glutTimerFunc(17, TimeEvent, 1);
 
 }
 
@@ -358,15 +387,21 @@ int main (int argc, char** argv) {
     
     //Gets the special blocks
     initRands();
+//    special[0] = 5;
+//    special[1] = 6;
+//    special[2] = 7;
+//    special[3] = 8;
+//    special[4] = 9;
+
     //Blocks Initializing
     for (float x = -8.4; x <= 8.5; x += 2.8) {
         for (float y = 7.5; y > 1.0; y -= 1.5) {
-            blocks[i].initBlock(x, y, isSpe(i), isBon(i));
+            blocks[i].initBlock(i, x, y, isSpe(i), isBon(i));
             i++;
         }
     }
     
-    glutTimerFunc( 10, TimeEvent, 1);
+    glutTimerFunc(17, TimeEvent, 1);
     glutMainLoop();
     return 0;
     

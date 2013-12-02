@@ -15,6 +15,7 @@ class Ball {
     float ypos;
     float rot;
     float speed;
+    int last;
     
 public:
     

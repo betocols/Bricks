@@ -19,7 +19,7 @@ public:
     void increaseSize();
     void resetSize();
     
-    int getX();
+    float getX();
     void moveX(float x);
     
     int getLife();

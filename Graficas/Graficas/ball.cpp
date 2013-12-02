@@ -20,8 +20,9 @@
 Ball::Ball(){
     xpos = 0.0;
     ypos = -8.25;
-    speed = 0.1;
+    speed = 0.0;
     rot = 90.0;
+    last = 0;
     
 }     //Constructor
 
@@ -31,8 +32,9 @@ Ball::~Ball(){
 void Ball::initBall(){
     xpos = 0.0;
     ypos = -8.25;
-    speed = 0.1;
+    speed = 0.0;
     rot = 90.0;
+    last = 0;
 }
 
 void Ball::drawBall(float x, float y, float r){
@@ -58,6 +60,7 @@ void Ball::drawBall(float x, float y, float r){
         initBall();
     }
     
+    glColor3f(0.9, 0.6, 0.3);
     glBegin(GL_LINE_LOOP);
     for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
         glVertex3f( cos(i) * radio, sin(i) * radio, 0.0 );
@@ -83,7 +86,7 @@ void Ball::increaseSpeed(){
 }
 
 void Ball::resetSpeed() {
-    speed = 0.3;
+    speed = 0.1;
     printf("Ball speed reset: %f\n", speed);
 }
 
@@ -109,45 +112,35 @@ void Ball::move(int direction) {
 }
                       
 void Ball::boing(Platform plat) {
+    //Besides checking the collition, it also checks that the last element that it crashed with
+    //is different of the element that it is going to crash
+    
     //TOPE Y FONDO
-    if (ypos > 8.8 || ypos < -9.0) {
-      move(-1);
-      rot = 360 - rot;
-      move(1);
+    if (ypos > 8.8 && last != -2) {
+        move(-1);
+        rot = 360 - rot;
+        move(1);
+        last = -2;
     }
 
     //LADOS
-    if (xpos < -9.8 || xpos > 9.8) {
-        printf("Antes move(-1)   %f,",xpos);
+    if ((xpos < -9.8 || xpos > 9.8)  && last != -3) {
+//        printf("Antes move(-1)   %f,",xpos);
         move(-1);
-        printf("Despues move(-1)   %f, ",xpos);
+//        printf("Despues move(-1)   %f, ",xpos);
         rot = 180 - rot;
-        printf("Antes move(1)   %f, ",xpos);
+//        printf("Antes move(1)   %f, ",xpos);
         move(1);
-        printf("Despues move(1)   %f\n\n",xpos);
+//        printf("Despues move(1)   %f\n\n",xpos);
+        last = -3;
     }
 
-    // //BARRA IZQUIERDA
-    // if (xpos < -10.0 && xpos > -10.5 && ypos > -9.0 && ypos < 9.0) {
-    //     move(-1);
-    //     rot = (-PI/2) + ((PI/8) + ((ypos - plat[0].getY())/6)*(PI - PI/4));
+    //BARRA
+    if (last != -1 && xpos < (plat.getX()+1.0) && xpos > (plat.getX()-1.0) && ypos < -8.3 && ypos > -8.7) {
+        move(-1);
+        rot = 360-rot;
+        move(1);
+        last = -1;
+    }
 
-    //     if (ypos - plat[0].getY() < 1 || ypos - plat[0].getY() > 5)
-    //         rapida = 2;
-    //     else 
-    //         rapida = 1; 
-    //     move(1); 
-    // } 
-
-    // //BARRA DERECHA
-    // if (xpos < 10.0 && xpos > 10.5 && ypos > plat[0].getY() && ypos < 9.0) { 
-    //     move(-1); 
-    //     rot = (-PI/2) - ((PI/8) + ((ypos - plat[0].getY())/6)*(PI - PI/4)); 
-
-    //     if (ypos - plat[0].getY() < 1 || ypos - plat[0].getY() > 5) 
-    //         rapida = 2; 
-    //     else 
-    //         rapida = 1; 
-    //     move(1); 
-    // } 
 }

@@ -25,7 +25,8 @@ Block::~Block(){
     
 }
 
-void Block::initBlock(float x, float y, int t, int b){
+void Block::initBlock(int n, float x, float y, int t, int b){
+    num = n;
     xpos = x;
     ypos = y;
     type = t;
@@ -146,9 +147,9 @@ int Block::drawBlock(){
         return -1;
     
     if (life == 0) {
+        life--;
 		if (type == 1)
             return -2;
-        life--;
         return 0;
     }
     

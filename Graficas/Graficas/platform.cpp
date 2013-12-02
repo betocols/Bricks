@@ -70,7 +70,7 @@ void Platform::resetSize() {
     printf("Platform reset: %f\n", size);
 }
 
-int Platform::getX() {
+float Platform::getX() {
     return xpos;
 }
 
