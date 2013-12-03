@@ -284,7 +284,7 @@ void boom(int value) {
  void drawMenu() { 
 	char marcador[100];
 
-	if (b.getSpeed()==0.0 && win == 0 && b.getStop() == 0) {
+	if (b.getSpeed()==0.0 && win == 0 && b.getStop() == 0 && p.getLife()==3) {
 		sprintf(marcador,"Press S to start"); 
 		glRasterPos3f(-2,0,0);
 		for (int i = 0; i < strlen(marcador); i++)
@@ -309,8 +309,16 @@ void boom(int value) {
 		glRasterPos3f(-2.5,-1,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
-
 	}
+
+	if (p.getLife()==0) {
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"You lost!!");
+		glRasterPos3f(-1,0,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+	}
+
 } 
 
 void render(){
