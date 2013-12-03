@@ -278,10 +278,6 @@ void boom(int value) {
         t = 0.0;
 }
 
-void funcion(Block blocks[35]) {
-	printf("hola");
-}
-
 
 void render(){
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -289,8 +285,6 @@ void render(){
     
     glLoadIdentity ();
     gluLookAt (0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    
-	funcion(blocks);
     
     //Suaviza las lineas
     glEnable(GL_BLEND);
@@ -306,10 +300,16 @@ void render(){
         x = blocks[i].drawBlock();
         if (x==-2 || x==0) {
             win++;
+            if (win == 35)
+                b.setStop(0);
             isAboom = i;
             boom(0);
 			
         }
+    }
+    
+    if (b.getSpeed() == 0.0 && b.getStop() == 1) {
+        b.drawDirection();
     }
     
     b.drawBall(0.0, 0.0, 0.0);
@@ -325,14 +325,15 @@ void render(){
 }
 
 void keyboard(unsigned char key, int x, int y){
-    if (win == 35)
+    if (b.getStop() == 0)
         switch (key) {
             case 's':                   //Restarts game
-                //Gets the special blocks
-                initRands();
-                b.initBall();
-                p.initPlatform();
+//                //Gets the special blocks
+//                initRands();
+//                b.initBall();
+//                p.initPlatform();
                 win = 0;
+                b.setStop(1);
                 //Blocks Initializing
                 i = 0;
                 for (float x = -8.4; x <= 8.5; x += 2.8) {
@@ -341,6 +342,15 @@ void keyboard(unsigned char key, int x, int y){
                         i++;
                     }
                 }
+                break;
+            case 'a':
+            case 'A':
+                b.changeR(-10.0);
+                break;
+                //        case GLUT_KEY_RIGHT:
+            case 'd':
+            case 'D':
+                b.changeR(10.0);
                 break;
                 
             case 27:                    //Ends game
@@ -354,40 +364,47 @@ void keyboard(unsigned char key, int x, int y){
         switch(key)
         {
     //        case GLUT_KEY_LEFT:
+                
             case 'j':
             case 'J':
-                p.moveX(-0.5);
+                if (b.getSpeed() == 0.0)
+                    b.changeR(10.0);
+                else
+                    p.moveX(-0.5);
                 break;
     //        case GLUT_KEY_RIGHT:
             case 'l':
             case 'L':
-                p.moveX(0.5);
+                if (b.getSpeed() == 0.0)
+                    b.changeR(-10.0);
+                else
+                    p.moveX(0.5);
                 break;
                 //        case GLUT_KEY_RIGHT:
             case 'a':
             case 'A':
-                b.changeR(-45.0);
+                b.changeR(10.0);
                 break;
                 //        case GLUT_KEY_RIGHT:
             case 'd':
             case 'D':
-                b.changeR(45.0);
+                b.changeR(-10.0);
                 break;
             case 'b':
                 blocks[o++ % 35].changeLife(-1);
                 break;
-            case '1':
-                p.resetSize();
+//            case '1':
+//                p.resetSize();
+//                break;
+//            case '2':
+//                p.increaseSize();
+//                break;
+            case 32:
+                b.resetSpeed();
                 break;
-            case '2':
-                p.increaseSize();
-                break;
-            case '3':
-                    b.resetSpeed();
-                break;
-            case '4':
-                    b.increaseSpeed();
-                break;
+//            case '4':
+//                b.increaseSpeed();
+//                break;
             case 27:   // escape
                 exit(0);
                 break;

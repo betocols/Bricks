@@ -19,10 +19,11 @@
 
 Ball::Ball(){
     xpos = 0.0;
-    ypos = -8.25;
+    ypos = -8.29;
     speed = 0.0;
     rot = 90.0;
     last = 0;
+    stop = 0;
     
 }     //Constructor
 
@@ -31,10 +32,11 @@ Ball::~Ball(){
 
 void Ball::initBall(){
     xpos = 0.0;
-    ypos = -8.25;
+    ypos = -8.29;
     speed = 0.0;
     rot = 90.0;
     last = 0;
+    stop = 0;
 }
 
 void Ball::drawBall(float x, float y, float r){
@@ -45,7 +47,6 @@ void Ball::drawBall(float x, float y, float r){
     glTranslated(xpos, ypos, 0.0);
 
     glBegin(GL_LINE_LOOP);
-
 
     glRotated(rot, 0.0, 0.0, 1.0);
 
@@ -58,7 +59,7 @@ void Ball::drawBall(float x, float y, float r){
     if (ypos <= -10) {
         initBall();
     }
-    
+
     glColor3f(0.9, 0.6, 0.3);
     glBegin(GL_LINE_LOOP);
     for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
@@ -66,6 +67,22 @@ void Ball::drawBall(float x, float y, float r){
     }
     glEnd();
     
+    glPopMatrix();
+}
+
+void Ball::drawDirection() {
+    glPushMatrix();
+    glTranslated(xpos, ypos, 0.0);
+    glRotated(rot-90, 0.0, 0.0, 1.0);
+    glBegin(GL_LINES);
+    glVertex3f(0.0, 1.2, 0.0);
+    glVertex3f(0.0, 0.4, 0.0);
+    glVertex3f(0.0, 1.2, 0.0);
+    glVertex3f(-0.2, 1, 0.0);
+    glVertex3f(0.0, 1.2, 0.0);
+    glVertex3f(0.2, 1, 0.0);
+    glEnd();
+    glEnd();
     glPopMatrix();
 }
 
@@ -89,6 +106,14 @@ void Ball::resetSpeed() {
     printf("Ball speed reset: %f\n", speed);
 }
 
+void Ball::setStop(int s) {
+    stop = s;
+}
+
+int Ball::getStop() {
+    return stop;
+}
+
 float Ball::getY() {
     return ypos;
 }
@@ -102,7 +127,12 @@ float Ball::getR(){
 }
 
 void Ball::changeR(float r) {
-    rot += r;
+    float result = rot + r;
+    
+    if (result < 30.0 || result > 150.0)
+        return;
+    
+    rot = result;
 }
 
 void Ball::move(int direction) {
@@ -114,10 +144,10 @@ void Ball::boing(Platform plat, Block blocks[35]) {
     //Besides checking the collition, it also checks that the last element that it crashed with
     //is different of the element that it is going to crash
     //Platform
-    float splat = plat.getSize();
+    float splat = plat.getSize()+0.25;
     float xplat = plat.getX();
     
-    if (last != -1 && xpos < (xplat+splat) && xpos > (xplat-splat) && ypos < -8.3 && ypos > -8.9) {
+    if (last != -1 && xpos < (xplat+splat) && xpos > (xplat-splat) && ypos < -8.3 && ypos > -8.5) {
         move(-1);
         if (xpos < xplat) {
             rot = 90 + ((xplat - xpos))*45;
@@ -152,4 +182,7 @@ void Ball::boing(Platform plat, Block blocks[35]) {
             last = -4;
 
     }
+    
+    //Blocks
+    
 }
