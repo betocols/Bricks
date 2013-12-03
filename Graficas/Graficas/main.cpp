@@ -209,7 +209,7 @@ void drawBoom(float v[4][10]) {
 	for (int j= 0; j<10; j++) {
 		glBegin(GL_POINTS);
 			glPointSize(2.0);
-			glColor3f(1.0,0.0,1.0);
+			glColor3f(1.0,1.0,0.0);
 			glVertex3f(v[3][j], v[2][j], 0.0);
 			glPointSize(1.0);
 			glColor3f(0.0,0.0,0.0);
