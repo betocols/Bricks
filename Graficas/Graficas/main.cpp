@@ -264,8 +264,6 @@ void boom(int value) {
 		cyR = yboom + (t)*vExp[0][i]*radio;
 		cxR = xboom + (t)*vExp[1][i]*radio;
 
-		printf("sen %f cos %f \n", vExp[0][i], vExp[1][i]);
-
 		vExp[2][i] = cyR;
 		vExp[3][i] = cxR;
 
