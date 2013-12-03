@@ -7,10 +7,10 @@
 //
 
 class Block {
-
+    
     int num;        //Id of the block
     int type;       //0 = Normal block / 0 != Special block
-    int bonus;      //0 = Normal block / 1 = Bonus block size / 2 = Bonus block speed
+    int bonus;      //0 = Normal block / 1 = Bonus platform size / 2 = Bonus ball speed
     int life;       //Remaining life
     float xpos;     //X position
     float ypos;     //Y position
@@ -24,6 +24,8 @@ public:
     void initBlock(int num, float x, float y, int t, int b);
     float getX();
     float getY();
+    int getBonus();
+    void setBonus(int b);
     void changeLife(int l);
     int getLife();
     

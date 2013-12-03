@@ -20,7 +20,7 @@
 
 Platform::Platform() {
     xpos = 0.0;
-    size = 1.0;
+    size = 1.3;
     life = 3;
 }
 
@@ -28,18 +28,14 @@ Platform::~Platform() {
     
 }
 
-int Platform::getSize() {
-    return size;
+void Platform::initPlatform() {
+    xpos = 0.0;
+    size = 1.3;
+    life = 3;
 }
 
-int Platform::forWho(int who) {
-    
-    if  (who == 0)
-        increaseSize();
-    if (who == 1)
-        return 1;
-    
-    return 0;
+float Platform::getSize() {
+    return size;
 }
 
 void Platform::increaseSize() {
@@ -48,8 +44,8 @@ void Platform::increaseSize() {
     size *= 1.05;
     
     //size top is 1.05^5
-    if (size > 1.27681) {
-        size = 1.27681;
+    if (size > 1.6592) {
+        size = 1.6592;
         printf("Platform at top: %f\n", size);
     } else
         printf("Platform increased: %f\n", size);
@@ -66,7 +62,7 @@ void Platform::increaseSize() {
 }
 
 void Platform::resetSize() {
-    size = 1.0;
+    size = 1.3;
     printf("Platform reset: %f\n", size);
 }
 
@@ -85,10 +81,10 @@ void Platform::moveX(float x) {
     }
     
     //If it tries to go outside the boundaries, it takes the platform back
-    if (left < -10.0) {
+    if (left <= -10.0) {
         xpos = -10.0 + size;
         
-    } else if (right > 10.0) {
+    } else if (right >= 10.0) {
         xpos = 10.0 - size;
         
     }

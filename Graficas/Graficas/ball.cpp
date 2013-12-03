@@ -38,8 +38,7 @@ void Ball::initBall(){
 }
 
 void Ball::drawBall(float x, float y, float r){
-    double radio;
-    radio = 0.20;
+    float radio = 0.20;
     
     glPushMatrix();
 
@@ -114,8 +113,35 @@ void Ball::move(int direction) {
 void Ball::boing(Platform plat) {
     //Besides checking the collition, it also checks that the last element that it crashed with
     //is different of the element that it is going to crash
+    //Platform
+    float splat = plat.getSize();
+    float xplat = plat.getX();
+    float xb, dif = 0;
     
-    //TOPE Y FONDO
+    if (last != -1 && xpos < (xplat+splat) && xpos > (xplat-splat) && ypos < -8.3 && ypos > -8.9) {
+        move(-1);
+        if (xpos < xplat) {
+            xb = xpos;
+            
+            if ((xpos < 0.0) && (xplat < 0.0))
+                dif = -1 * (xpos - xplat);
+            else if ((xpos < 0) && (xplat >= 0))
+                dif = xplat - xpos;
+        
+            rot = 180 - (0.5 + (dif))*45;
+            
+        } else if (xpos > xplat)
+            rot = (splat + 0.5 - (xpos - xplat))*45;
+        else
+            rot = 360-rot;
+        
+        printf("size= %f , xpos= %f, plat: %f, rot %f:\n",splat, xpos, xplat, rot);
+        
+        move(1);
+        last = -1;
+    }
+    
+    //Top
     if (ypos > 8.8 && last != -2) {
         move(-1);
         rot = 360 - rot;
@@ -123,24 +149,15 @@ void Ball::boing(Platform plat) {
         last = -2;
     }
 
-    //LADOS
-    if ((xpos < -9.8 || xpos > 9.8)  && last != -3) {
-//        printf("Antes move(-1)   %f,",xpos);
+    //Walls
+    if ((xpos < -9.8 && last != -4) || (xpos > 9.8 && last != -3)) {
         move(-1);
-//        printf("Despues move(-1)   %f, ",xpos);
         rot = 180 - rot;
-//        printf("Antes move(1)   %f, ",xpos);
         move(1);
-//        printf("Despues move(1)   %f\n\n",xpos);
-        last = -3;
-    }
+        if (xpos > 0.0)
+            last = -3;
+        else
+            last = -4;
 
-    //BARRA
-    if (last != -1 && xpos < (plat.getX()+1.0) && xpos > (plat.getX()-1.0) && ypos < -8.3 && ypos > -8.7) {
-        move(-1);
-        rot = 360-rot;
-        move(1);
-        last = -1;
     }
-
 }

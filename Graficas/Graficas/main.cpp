@@ -29,6 +29,7 @@ int bonus[5];                       //Array to obtain the number of the bonus bl
 Platform p;
 Ball b;
 int i = 0, isAboom = 0, x, o = 0;
+int win = 0;
 
 void changeViewport(int w, int h) {
     
@@ -177,6 +178,30 @@ float gradToRad(float g) {
 	return rad;
 }
 
+void gotBonus() {
+    int pos;
+    for (int j = 0; j < 5; j++){
+        pos = bonus[j];
+        //Checks if the bonus is at the height of the platform
+        if ((blocks[pos].getY() >= -8.8) && (blocks[pos].getY() <= -8.5)) {
+
+            //Checks if the bonus is at reach of the platform
+            if ((blocks[pos].getX() <= p.getX() + p.getSize() + 0.3)
+                  && (blocks[pos].getX() >= p.getX() - p.getSize() - 0.3)) {
+
+                if (blocks[pos].getBonus() == 2) {
+                    blocks[pos].setBonus(0);
+                    p.increaseSize();
+                } else if (blocks[pos].getBonus() == 1) {
+                    b.increaseSpeed();
+                    blocks[pos].setBonus(0);
+                }
+                
+            }
+        }
+    }
+}
+
 void drawBoom(float cxR, float cyR, float vExp[5][10], float ratio) {
     
     glPointSize(5.0);
@@ -192,11 +217,8 @@ float t=0.0;
 void boom(int value) {
     
 	float vExp[5][10];
-//	float t, ratio;
-	float ratio;
+	float radio = 1.0;
     float cxR, cyR;
-    //t = 0.0;
-	ratio = 1.0;
     
     vExp[0][0] = sin(gradToRad(15.0));
     vExp[1][0] = cos(gradToRad(15.0));
@@ -231,18 +253,10 @@ void boom(int value) {
 	cxR = blocks[isAboom].getX();
 	cyR = blocks[isAboom].getY();
     
-	printf("cxR: %f, cyR: %f y t: %f iniciales\n\n", cxR, cyR, t);
-    
-//    t = value * 0.2;
-    
 	for(int i=0; i<10; i++){
         
-//		printf("Entre en el for\n");
-//		cyR = blocks[isAboom].getY() + (t)*vExp[0][i] + (1-t)* vExp[0][i+1];
-//		cxR = blocks[isAboom].getX() + (t)*vExp[1][i] + (1-t)* vExp[1][i+1];
-
-        cyR = blocks[isAboom].getY() + (t)*vExp[0][i]*ratio;
-        cxR = blocks[isAboom].getX() + (t)*vExp[1][i]*ratio;
+        cyR = blocks[isAboom].getY() + (t)*vExp[0][i]*radio;
+        cxR = blocks[isAboom].getX() + (t)*vExp[1][i]*radio;
 
 
 //        drawBoom(cxR, cyR, vExp, ratio);
@@ -261,7 +275,6 @@ void boom(int value) {
 //		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
         
 	}
-    
     glutPostRedisplay();
 //    if (t <= 1.0) {
 //        printf("Entre en el if con value= %d, t= %f\n",value,t);
@@ -270,6 +283,9 @@ void boom(int value) {
 //    }
     t += 0.1;
     glutTimerFunc(1000, boom, 0);
+    
+    if (t == 1.0)
+        t = 0.0;
     
 }
 
@@ -294,6 +310,7 @@ void render(){
     for(i = 0; i < 35; i++) {
         x = blocks[i].drawBlock();
         if (x==-2 || x==0) {
+            win++;
             isAboom = i;
             boom(0);
 //            boom(1);
@@ -305,54 +322,88 @@ void render(){
     }
     
     b.drawBall(0.0, 0.0, 0.0);
+    
+    //If all the blocks were destroyed
+    if (win == 35) {
+        glBegin(GL_POINTS);
+        glVertex3d(0.0, 0.0, 0.0);
+        glEnd();
+    }
+    
     glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y){
-    switch(key)
-    {
-//        case GLUT_KEY_LEFT:
-        case 'j':
-        case 'J':
-            p.moveX(-1.0);
-            break;
-//        case GLUT_KEY_RIGHT:
-        case 'l':
-        case 'L':
-            p.moveX(1.0);
-            break;
-            //        case GLUT_KEY_RIGHT:
-        case 'a':
-        case 'A':
-            b.changeR(-45.0);
-            break;
-            //        case GLUT_KEY_RIGHT:
-        case 'd':
-        case 'D':
-            b.changeR(45.0);
-            break;
-        case 'b':
-            blocks[o++ % 35].changeLife(-1);
-            break;
-        case '1':
-            p.resetSize();
-            break;
-        case '2':
-            p.increaseSize();
-            break;
-        case '3':
-                b.resetSpeed();
-            break;
-        case '4':
-                b.increaseSpeed();
-            break;
-        case 27:   // escape
-            exit(0);
-            break;
-            
-        default:
-            break;
-    }
+    if (win == 35)
+        switch (key) {
+            case 's':                   //Restarts game
+                //Gets the special blocks
+                initRands();
+                b.initBall();
+                p.initPlatform();
+                win = 0;
+                //Blocks Initializing
+                i = 0;
+                for (float x = -8.4; x <= 8.5; x += 2.8) {
+                    for (float y = 7.5; y > 1.0; y -= 1.5) {
+                        blocks[i].initBlock(i, x, y, isSpe(i), isBon(i));
+                        i++;
+                    }
+                }
+                break;
+                
+            case 27:                    //Ends game
+                exit(0);
+                break;
+                
+            default:
+                break;
+        }
+    else
+        switch(key)
+        {
+    //        case GLUT_KEY_LEFT:
+            case 'j':
+            case 'J':
+                p.moveX(-0.5);
+                break;
+    //        case GLUT_KEY_RIGHT:
+            case 'l':
+            case 'L':
+                p.moveX(0.5);
+                break;
+                //        case GLUT_KEY_RIGHT:
+            case 'a':
+            case 'A':
+                b.changeR(-45.0);
+                break;
+                //        case GLUT_KEY_RIGHT:
+            case 'd':
+            case 'D':
+                b.changeR(45.0);
+                break;
+            case 'b':
+                blocks[o++ % 35].changeLife(-1);
+                break;
+            case '1':
+                p.resetSize();
+                break;
+            case '2':
+                p.increaseSize();
+                break;
+            case '3':
+                    b.resetSpeed();
+                break;
+            case '4':
+                    b.increaseSpeed();
+                break;
+            case 27:   // escape
+                exit(0);
+                break;
+                
+            default:
+                break;
+        }
     
     render();
 }
@@ -360,6 +411,7 @@ void keyboard(unsigned char key, int x, int y){
 void TimeEvent(int value) {
     
     b.boing(p);
+    gotBonus();
 	glutPostRedisplay();
 	glutTimerFunc(17, TimeEvent, 1);
 
@@ -387,11 +439,6 @@ int main (int argc, char** argv) {
     
     //Gets the special blocks
     initRands();
-//    special[0] = 5;
-//    special[1] = 6;
-//    special[2] = 7;
-//    special[3] = 8;
-//    special[4] = 9;
 
     //Blocks Initializing
     for (float x = -8.4; x <= 8.5; x += 2.8) {

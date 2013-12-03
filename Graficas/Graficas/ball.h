@@ -21,7 +21,8 @@ public:
     
     Ball();     //Constructor
     ~Ball();    //Destructor
-    
+
+    void initBall();
     void drawBall(float x, float y, float r);
 
     float getSpeed();
@@ -37,6 +38,4 @@ public:
     void move(int direction);
     void boing(Platform plat);
 
-private:
-    void initBall();
 };

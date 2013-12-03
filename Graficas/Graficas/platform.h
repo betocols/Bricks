@@ -14,8 +14,9 @@ class Platform {
 public:
     Platform();  //Constructor
     ~Platform(); //Destructor
-    
-    int getSize();
+
+    void initPlatform();
+    float getSize();
     void increaseSize();
     void resetSize();
     
@@ -24,8 +25,6 @@ public:
     
     int getLife();
     void changeLife(int l);
-    //Determines if the bonus is for platform or for ball
-    int forWho(int who);
     //Draws the block
     void drawPlatform();
     

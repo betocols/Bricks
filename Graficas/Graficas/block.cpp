@@ -21,8 +21,7 @@
 Block::Block(){
 }
 
-Block::~Block(){
-    
+Block::~Block(){    
 }
 
 void Block::initBlock(int n, float x, float y, int t, int b){
@@ -30,6 +29,7 @@ void Block::initBlock(int n, float x, float y, int t, int b){
     xpos = x;
     ypos = y;
     type = t;
+    
 
     if (type == 0)      //Normal
         life = 1;
@@ -141,10 +141,87 @@ void Block::drawDamaged() {
     
 }
 
+/* Returns:
+ *  -1 = if block is already destroyed and it doesnt have a bonus
+ *  -2 = if
+ *
+ *
+ *
+ *
+ */
 int Block::drawBlock(){
+    if (life < 0) {
+        float radio = 0.35;
+        float radio2 = 0.15;
+        glPointSize(10.0);
+        if (bonus == 1) {   //Platform size
+            glColor3f(0.9, 0.6, 0.3);
+            glPushMatrix();
+            glTranslated(xpos, ypos -= 0.05, 0.0);
+            
+            glBegin(GL_LINE_LOOP);
+            for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
+                glVertex3f( cos(i) * radio, sin(i) * radio, 0.0 );
+            }
+            glEnd();
+            
+            glPushMatrix();
+            glTranslated(0.09, 0.0, 0.0);
+            
+            glBegin(GL_LINES);
+            glVertex3f(-0.3, 0.0, 0.0);
+            glVertex3f(-0.16, 0.0, 0.0);
+            glVertex3f(-0.28, 0.15, 0.0);
+            glVertex3f(0.0, 0.15, 0.0);
+            glVertex3f(-0.28, -0.15, 0.0);
+            glVertex3f(0.0, -0.15, 0.0);
+            glEnd();
+            
+            glBegin(GL_LINE_LOOP);
+            for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
+                glVertex3f( cos(i) * radio2, sin(i) * radio2, 0.0 );
+            }
+            glEnd();
+            glPopMatrix();
+            
+            glPopMatrix();
+            
+        } else if (bonus == 2) {    //Ball speed
+            glColor4f(0.0, 0.0, 1.0, 1.0);
+            glPushMatrix();
+            glTranslated(xpos, ypos -= 0.05, 0.0);
+            
+            glBegin(GL_LINE_LOOP);
+            for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
+                glVertex3f( cos(i) * radio, sin(i) * radio, 0.0 );
+            }
+            glEnd();
+            
+            glBegin(GL_LINES);
+            glVertex3f(0.28, 0.1, 0.0);
+            glVertex3f(-0.28, 0.1, 0.0);
+            glVertex3f(-0.28, 0.1, 0.0);
+            glVertex3f(-0.28, -0.1, 0.0);
+            glVertex3f(0.28, 0.1, 0.0);
+            glVertex3f(0.28, -0.1, 0.0);
+            glVertex3f(0.28, -0.1, 0.0);
+            glVertex3f(-0.28, -0.1, 0.0);
 
-    if (life < 0)
+            glColor4f(0.0, 0.0, 1.0, 1.0);
+            glVertex3f(-0.15, 0.1, 0.0);
+            glVertex3f(0.15, 0.1, 0.0);
+            glVertex3f(-0.15, 0.1, 0.0);
+            glVertex3f(-0.15, -0.1, 0.0);
+            glVertex3f(0.15, 0.1, 0.0);
+            glVertex3f(0.15, -0.1, 0.0);
+            glVertex3f(0.15, -0.1, 0.0);
+            glVertex3f(-0.15, -0.1, 0.0);
+            glEnd();
+            
+            glPopMatrix();
+        }
         return -1;
+    }
     
     if (life == 0) {
         life--;
@@ -153,21 +230,11 @@ int Block::drawBlock(){
         return 0;
     }
     
-    glPointSize(10.0);
-    if (bonus == 1) {
-        glColor4f(0.5, 0.5, 0.5, 1.0);
-        glBegin(GL_POINTS);
-        glVertex3f(xpos, ypos, 0.0);
-        glEnd();
-    } else if (bonus == 2) {
-        glColor4f(0.3, 0.5, 0.8, 1.0);
-        glBegin(GL_POINTS);
-        glVertex3f(xpos, ypos, 0.0);
-        glEnd();
-    }
+    //Block is alive and is normal
     if (type == 0) {
         glColor4f(1.0, 1.0, 1.0, 1.0);
         drawUndamaged();
+    //Block is alive and type is special
     } else {
         glColor4f(1.0, 0.0, 0.0, 1.0);
         if (life == 2)
@@ -187,6 +254,14 @@ float Block::getY() {
     return ypos;
 }
 
+int Block::getBonus() {
+    return bonus;
+}
+
+void Block::setBonus(int b) {
+    bonus = b;
+}
+
 int Block::getLife() {
     return life;
 }
@@ -194,3 +269,5 @@ int Block::getLife() {
 void Block::changeLife(int l) {
     life--;
 }
+
+
