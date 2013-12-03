@@ -183,6 +183,8 @@ float gradToRad(float g) {
 
 void gotBonus() {
     int pos;
+    if (b.getSpeed() == 0.0)
+        return;
     for (int j = 0; j < 5; j++){
         pos = bonus[j];
         //Checks if the bonus is at the height of the platform
@@ -284,15 +286,22 @@ void boom(int value) {
  void drawMenu() { 
 	char marcador[100];
 
-	if (b.getSpeed()==0.0 && win == 0 && b.getStop() == 0 && p.getLife()==3) {
-		sprintf(marcador,"Press S to start"); 
-		glRasterPos3f(-2,0,0);
+	if (b.getSpeed()==0.0 && win == 0 && p.getLife()==3) {
+		sprintf(marcador,"Press Space to launch the ball.");
+		glRasterPos3f(-4,0,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+
+        memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"A,J -> Rotate Left          D,L -> Rotate Right");
+		glRasterPos3f(-4.5,-1.0,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, marcador[i]);
+        
 	} else {
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Life: %d          A -> Move Left          D -> Move Right          Space -> Launch Ball", p.getLife());
-		glRasterPos3f(-9.2,-9.8,0);
+		sprintf(marcador,"Life: %d          A,J -> Move Left          D,L -> Move Right", p.getLife());
+		glRasterPos3f(-6.2,-9.8,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, marcador[i]);
 	}
@@ -305,7 +314,7 @@ void boom(int value) {
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Press S to start again");
+		sprintf(marcador,"Press S to start the game.");
 		glRasterPos3f(-2.5,-1,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
@@ -315,6 +324,18 @@ void boom(int value) {
 		memset(marcador, 0, sizeof(marcador));
 		sprintf(marcador,"You lost!!");
 		glRasterPos3f(-1,0,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+        
+        memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press R to restart the game.");
+		glRasterPos3f(-3.0,-1,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+        
+        memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press Esc to close out.");
+		glRasterPos3f(-2.5,-2,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 	}
@@ -354,7 +375,7 @@ void render(){
 		}
     }
     
-    if (b.getSpeed() == 0.0 && b.getStop() == 1)
+    if (b.getSpeed() == 0.0)
         b.drawDirection();
     
 
@@ -381,13 +402,50 @@ void render(){
 }
 
 void keyboard(unsigned char key, int x, int y){
-    if (b.getStop() == 0)
+
+    if (p.getLife() > 0) {
+            switch(key)
+            {
+        //        case GLUT_KEY_LEFT:
+                    
+                case 'a':                       //Rotate first direction of the ball counterclockwise
+                case 'A':                       //Move the platform to the left
+                case 'j':
+                case 'J':
+                    if (b.getSpeed() == 0.0)
+                        b.changeR(10.0);
+                    else
+                        p.moveX(-0.5);
+                    break;
+        //        case GLUT_KEY_RIGHT:
+                case 'd':                       //Rotate first direction of the ball clockwise
+                case 'D':                       //Move the platform to the left
+                case 'l':
+                case 'L':
+                    if (b.getSpeed() == 0.0)
+                        b.changeR(-10.0);
+                    else
+                        p.moveX(0.5);
+                    break;
+                case 32:                        //Empezar a mover pelota
+                    if (b.getSpeed() == 0)
+                        b.resetSpeed();
+                    break;
+                case 27:   // escape
+                    exit(0);
+                    break;
+                    
+                default:
+                    break;
+            }
+    } else {
         switch (key) {
-            case 's':                   //Restarts game
-//                //Gets the special blocks
-//                initRands();
-//                b.initBall();
-//                p.initPlatform();
+            case 'r':                   //Restarts game
+            case 'R':
+                //Gets the special blocks
+                initRands();
+                b.initBall();
+                p.initPlatform();
                 win = 0;
                 b.setStop(1);
                 //Blocks Initializing
@@ -399,16 +457,6 @@ void keyboard(unsigned char key, int x, int y){
                     }
                 }
                 break;
-            case 'a':
-            case 'A':
-                b.changeR(-10.0);
-                break;
-                //        case GLUT_KEY_RIGHT:
-            case 'd':
-            case 'D':
-                b.changeR(10.0);
-                break;
-                
             case 27:                    //Ends game
                 exit(0);
                 break;
@@ -416,59 +464,9 @@ void keyboard(unsigned char key, int x, int y){
             default:
                 break;
         }
-    else
-        switch(key)
-        {
-    //        case GLUT_KEY_LEFT:
-                
-            case 'j':
-            case 'J':
-                if (b.getSpeed() == 0.0)
-                    b.changeR(10.0);
-                else
-                    p.moveX(-0.5);
-                break;
-    //        case GLUT_KEY_RIGHT:
-            case 'l':
-            case 'L':
-                if (b.getSpeed() == 0.0)
-                    b.changeR(-10.0);
-                else
-                    p.moveX(0.5);
-                break;
-                //        case GLUT_KEY_RIGHT:
-            case 'a':
-            case 'A':
-                b.changeR(10.0);
-                break;
-                //        case GLUT_KEY_RIGHT:
-            case 'd':
-            case 'D':
-                b.changeR(-10.0);
-                break;
-            case 'b':
-                blocks[o++ % 35].changeLife(-1);
-                break;
-//            case '1':
-//                p.resetSize();
-//                break;
-//            case '2':
-//                p.increaseSize();
-//                break;
-            case 32:
-                b.resetSpeed();
-                break;
-//            case '4':
-//                b.increaseSpeed();
-//                break;
-            case 27:   // escape
-                exit(0);
-                break;
-                
-            default:
-                break;
-        }
-    
+
+    }
+
     render();
 }
 

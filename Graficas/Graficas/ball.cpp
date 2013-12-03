@@ -202,8 +202,8 @@ void Ball::boing(Platform plat, Block blocks[35]) {
             
             //Borders of the block
             cx = blocks[k].getX();
-            blr = cx + 1.2;
-            bll = cx - 1.2;
+            blr = cx + 1.1;
+            bll = cx - 1.1;
             cy = blocks[k].getY();
             blt = cy + 0.27;
             blb = cy - 0.27;
