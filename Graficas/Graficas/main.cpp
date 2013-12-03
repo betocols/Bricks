@@ -206,25 +206,21 @@ void gotBonus() {
 
 void drawBoom(float v[4][10]) {
 
-	glPushMatrix();
-
 	for (int j= 0; j<10; j++) {
-
-		glPushMatrix();
-		glTranslated(v[3][j], v[2][j], 0.0);	
-
-		glBegin(GL_LINE_LOOP); 
-		for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
-			glVertex2f( cos(i) * 0.1, sin(i) * 0.1); 
-		} 
+		glBegin(GL_POINTS);
+			glPointSize(2.0);
+			glColor3f(1.0,0.0,1.0);
+			glVertex3f(v[3][j], v[2][j], 0.0);
+			glPointSize(1.0);
+			glColor3f(0.0,0.0,0.0);
+			glVertex3f(v[3][j], v[2][j], 0.0);
 		glEnd();
 	}
 
-	glPopMatrix();
-    
 }
 
 void initBoom() {
+
 	vExp[0][0] = sin(gradToRad(15.0));
     vExp[1][0] = cos(gradToRad(15.0));
     
@@ -236,7 +232,7 @@ void initBoom() {
     
     vExp[0][3] = sin(gradToRad(90.0));
     vExp[1][3] = cos(gradToRad(90.0));
-    
+
     vExp[0][4] = sin(gradToRad(180.0));
     vExp[1][4] = cos(gradToRad(180.0));
     
@@ -254,6 +250,7 @@ void initBoom() {
     
     vExp[0][9] = sin(gradToRad(225.0));
     vExp[1][9] = cos(gradToRad(225.0));
+
 }
 
 void boom(int value) {
@@ -266,6 +263,8 @@ void boom(int value) {
         
 		cyR = yboom + (t)*vExp[0][i]*radio;
 		cxR = xboom + (t)*vExp[1][i]*radio;
+
+		printf("sen %f cos %f \n", vExp[0][i], vExp[1][i]);
 
 		vExp[2][i] = cyR;
 		vExp[3][i] = cxR;
@@ -307,6 +306,8 @@ void render(){
             win++;
             if (win == 35)
                 b.setStop(0);
+		}
+		if (x == -2) {
             isAboom = i;
 			xboom = blocks[isAboom].getX();
 			yboom = blocks[isAboom].getY();
@@ -319,7 +320,7 @@ void render(){
         b.drawDirection();
     
 
-	if ((t > -0.1) && (t <= 1.0))
+	if ((t > -0.1) && (t <= 1.0) && (t != 0.0))
 		drawBoom(vExp);
 
     b.drawBall(0.0, 0.0, 0.0);
