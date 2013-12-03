@@ -116,26 +116,18 @@ void Ball::boing(Platform plat) {
     //Platform
     float splat = plat.getSize();
     float xplat = plat.getX();
-    float xb, dif = 0;
     
     if (last != -1 && xpos < (xplat+splat) && xpos > (xplat-splat) && ypos < -8.3 && ypos > -8.9) {
         move(-1);
         if (xpos < xplat) {
-            xb = xpos;
-            
-            if ((xpos < 0.0) && (xplat < 0.0))
-                dif = -1 * (xpos - xplat);
-            else if ((xpos < 0) && (xplat >= 0))
-                dif = xplat - xpos;
-        
-            rot = 180 - (0.5 + (dif))*45;
+            rot = 90 + ((xplat - xpos))*45;
             
         } else if (xpos > xplat)
             rot = (splat + 0.5 - (xpos - xplat))*45;
         else
             rot = 360-rot;
         
-        printf("size= %f , xpos= %f, plat: %f, rot %f:\n",splat, xpos, xplat, rot);
+//        printf("dif= %f, size= %f , xpos= %f, plat: %f, rot %f:\n",dif, splat, xpos, xplat, rot);
         
         move(1);
         last = -1;
