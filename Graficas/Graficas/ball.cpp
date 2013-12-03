@@ -197,11 +197,11 @@ void Ball::boing(Platform plat, Block blocks[35]) {
             
             //Borders of the block
             cx = blocks[k].getX();
-            blr = cx + 1.0;
-            bll = cx - 1.0;
+            blr = cx + 1.2;
+            bll = cx - 1.2;
             cy = blocks[k].getY();
-            blt = cy + 0.25;
-            blb = cy - 0.25;
+            blt = cy + 0.27;
+            blb = cy - 0.27;
             
             //Top and Bottom
             if (((top >= blb && top <= cy) || (bottom <= blt && bottom >= cy))  && (xpos >= bll && xpos < blr)) {
@@ -209,17 +209,15 @@ void Ball::boing(Platform plat, Block blocks[35]) {
                 rot = 360 - rot;
                 move(1);
                 blocks[k].changeLife(-1);
-                printf("bloque: %d, vida: %d\n", k, blocks[k].getLife());
                 last = k;
+                continue;
             }
 
-            
             //Walls
             if ((bottom <= blt && top >= blb) &&  ((right >= bll && right <= cx) || (left <= blr && left >= cx))) {
                 move(-1);
                 rot = 180 - rot;
                 move(1);
-                printf("bloque: %d, vida: %d\n", k, blocks[k].getLife());
                 blocks[k].changeLife(-1);
                 last = k;
             }
