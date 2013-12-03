@@ -36,6 +36,5 @@ public:
     float getR();
     
     void move(int direction);
-    void boing(Platform plat);
-
+    void boing(Platform plat, Block blocks[35]);
 };

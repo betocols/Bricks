@@ -110,7 +110,7 @@ void Ball::move(int direction) {
     ypos += direction*speed*sinf(rot);
 }
                       
-void Ball::boing(Platform plat) {
+void Ball::boing(Platform plat, Block blocks[35]) {
     //Besides checking the collition, it also checks that the last element that it crashed with
     //is different of the element that it is going to crash
     //Platform
