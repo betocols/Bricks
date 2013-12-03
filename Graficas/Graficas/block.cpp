@@ -43,6 +43,8 @@ void Block::initBlock(int n, float x, float y, int t, int b){
         bonus = 1;
     else if (b == 2)    //Speed
         bonus = 2;
+    else if (b == 3)
+        bonus = 3;
         
 }
 
@@ -61,8 +63,34 @@ void Block::drawUndamaged() {
     //topline
     glVertex3f(xpos-1.0, ypos+0.25, 0.0);
     glVertex3f(xpos+1.0, ypos+0.25, 0.0);
-    glEnd();
 
+    //bottomline
+    glVertex3f(xpos-0.85, ypos-0.15, 0.0);
+    glVertex3f(xpos+0.85, ypos-0.15, 0.0);
+    //leftline
+    glVertex3f(xpos-0.85, ypos+0.15, 0.0);
+    glVertex3f(xpos-0.85, ypos-0.15, 0.0);
+    //rightline
+    glVertex3f(xpos+0.85, ypos+0.15, 0.0);
+    glVertex3f(xpos+0.85, ypos-0.15, 0.0);
+    //topline
+    glVertex3f(xpos-0.85, ypos+0.15, 0.0);
+    glVertex3f(xpos+0.85, ypos+0.15, 0.0);
+    
+    //insidebottomline
+    glVertex3f(xpos+1.0, ypos-0.25, 0.0);
+    glVertex3f(xpos+0.85, ypos-0.15, 0.0);
+    //insideleftline
+    glVertex3f(xpos-1.0, ypos+0.25, 0.0);
+    glVertex3f(xpos-0.85, ypos+0.15, 0.0);
+    //insiderightline
+    glVertex3f(xpos+1.0, ypos+0.25, 0.0);
+    glVertex3f(xpos+0.85, ypos+0.15, 0.0);
+    //insidetopline
+    glVertex3f(xpos-1.0, ypos-0.25, 0.0);
+    glVertex3f(xpos-0.85, ypos-0.15, 0.0);
+
+    glEnd();
 }
 
 void Block::drawDamaged() {
@@ -142,14 +170,6 @@ void Block::drawDamaged() {
     
 }
 
-/* Returns:
- *  -1 = if block is already destroyed and it doesnt have a bonus
- *  -2 = if
- *
- *
- *
- *
- */
 int Block::drawBlock(){
     if (life < 0) {
         float radio = 0.35;
@@ -158,7 +178,9 @@ int Block::drawBlock(){
         if (bonus == 1) {   //Platform size
             glColor3f(0.9, 0.6, 0.3);
             glPushMatrix();
+
             glTranslated(xpos, ypos -= 0.05, 0.0);
+
             
             glBegin(GL_LINE_LOOP);
             for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
@@ -217,6 +239,45 @@ int Block::drawBlock(){
             glVertex3f(0.15, -0.1, 0.0);
             glVertex3f(0.15, -0.1, 0.0);
             glVertex3f(-0.15, -0.1, 0.0);
+            glEnd();
+            
+            glPopMatrix();
+            
+        } else if (bonus == 3) {    //Extra life
+            glColor4f(1.0, 0.0, 0.0, 1.0);
+            glPushMatrix();
+            glTranslated(xpos, ypos -= 0.05, 0.0);
+            
+            glBegin(GL_LINE_LOOP);
+            for (double i = 0; i < 2 * M_PI; i += M_PI / 12) {  // +1 para cerrar
+                glVertex3f( cos(i) * radio, sin(i) * radio, 0.0 );
+            }
+            glEnd();
+            
+            glBegin(GL_LINES);
+            glVertex3f(0.0, -0.2, 0.0);
+            glVertex3f(0.2, 0.0, 0.0);
+            
+            glVertex3f(0.0, -0.2, 0.0);
+            glVertex3f(-0.2, 0.0, 0.0);
+            
+            glVertex3f(0.2, 0.0, 0.0);
+            glVertex3f(0.2, 0.1, 0.0);
+            
+            glVertex3f(0.2, 0.1, 0.0);
+            glVertex3f(0.1, 0.2, 0.0);
+            
+            glVertex3f(-0.2, 0.0, 0.0);
+            glVertex3f(-0.2, 0.1, 0.0);
+            
+            glVertex3f(-0.2, 0.1, 0.0);
+            glVertex3f(-0.1, 0.2, 0.0);
+            
+            glVertex3f(0.1, 0.2, 0.0);
+            glVertex3f(0.0, 0.15, 0.0);
+            
+            glVertex3f(-0.1, 0.2, 0.0);
+            glVertex3f(0.0, 0.15, 0.0);
             glEnd();
             
             glPopMatrix();

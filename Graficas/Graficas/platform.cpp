@@ -43,13 +43,6 @@ void Platform::increaseSize() {
     
     size *= 1.05;
     
-    //size top is 1.05^5
-    if (size > 1.6592) {
-        size = 1.6592;
-        printf("Platform at top: %f\n", size);
-    } else
-        printf("Platform increased: %f\n", size);
-    
     //If the platform increases it size next to a border,
     //moves the center so it doesnt pass the border
     left = xpos - size;
@@ -63,7 +56,6 @@ void Platform::increaseSize() {
 
 void Platform::resetSize() {
     size = 1.3;
-    printf("Platform reset: %f\n", size);
 }
 
 float Platform::getX() {

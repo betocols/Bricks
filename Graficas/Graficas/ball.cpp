@@ -96,20 +96,16 @@ float Ball::getSpeed(){
     return speed;
 }
 
-void Ball::increaseSpeed(){
-    
-    if (speed*1.1 > 0.161051) {
-        printf("Ball speed at top: %f\n", speed);
-        return;
-    }
+void Ball::moreSpeed(float s) {
+    speed += s;
+}
 
-    speed *= 1.1;
-    printf("Ball speed increased: %f\n", speed);
+void Ball::increaseSpeed(int lvl){
+    speed *= (1.1 + lvl*0.1);
 }
 
 void Ball::resetSpeed() {
     speed = 0.1;
-    printf("Ball speed reset: %f\n", speed);
 }
 
 void Ball::setStop(int s) {
@@ -142,8 +138,8 @@ void Ball::changeR(float r) {
 }
 
 void Ball::move(int direction) {
-    xpos += direction*speed*cosf(rot);
-    ypos += direction*speed*sinf(rot);
+    xpos += stop*direction*speed*cosf(rot);
+    ypos += stop*direction*speed*sinf(rot);
 }
                       
 void Ball::boing(Platform plat, Block blocks[35]) {
@@ -162,8 +158,6 @@ void Ball::boing(Platform plat, Block blocks[35]) {
             rot = (splat + 0.5 - (xpos - xplat))*45;
         else
             rot = 360-rot;
-        
-//        printf("dif= %f, size= %f , xpos= %f, plat: %f, rot %f:\n",dif, splat, xpos, xplat, rot);
         
         move(1);
         last = -1;

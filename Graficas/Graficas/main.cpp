@@ -26,11 +26,12 @@ using namespace std;
 #define DEF_floorGridZSteps 10.0
 Block blocks[35];                   //Array of blocks
 int special[7];                     //Array to obtain the number of the especial blocks
-int bonus[5];                       //Array to obtain the number of the bonus blocks
+int bonus[9];                       //Array to obtain the number of the bonus blocks
 Platform p;
 Ball b;
-int i = 0, isAboom = 0, x, o = 0, stop = 0;
-int win = 0;
+int puntuacion = 0, lvl = 1;
+
+int i = 0, isAboom = 0, x, o = 0, stop = 0, win = 0;
 float t=0.0, xboom = 0.0, yboom = 0.0;
 float vExp[4][10]; ///Array to obtain the positions of the boom
 
@@ -135,7 +136,7 @@ void initRands(){
     
     j = 0;
     bonus[0] = rand()% 34;
-    while (j < 5){
+    while (j < 9){
         randNum = rand()% 34;
         
         for (k = 0; k < j; k++) {
@@ -165,14 +166,14 @@ int isSpe(int e){
 int isBon(int e){
     int j;
     
-    for(j = 0; j < 5; j++)
+    for(j = 0; j < 9; j++)
         if (bonus[j] == e)
             break;
     
-    if (j == 5)
+    if (j == 9)
         return 0;
     
-    return rand()% 2 + 1;
+    return rand()% 3 + 1;
 }
 
 float gradToRad(float g) {
@@ -185,7 +186,7 @@ void gotBonus() {
     int pos;
     if (b.getSpeed() == 0.0)
         return;
-    for (int j = 0; j < 5; j++){
+    for (int j = 0; j < 9; j++){
         pos = bonus[j];
         //Checks if the bonus is at the height of the platform
         if ((blocks[pos].getY() >= -8.8) && (blocks[pos].getY() <= -8.5)) {
@@ -197,9 +198,15 @@ void gotBonus() {
                 if (blocks[pos].getBonus() == 2) {
                     blocks[pos].setBonus(0);
                     p.increaseSize();
+                    puntuacion += 20;
                 } else if (blocks[pos].getBonus() == 1) {
-                    b.increaseSpeed();
                     blocks[pos].setBonus(0);
+                    b.increaseSpeed(lvl);
+                    puntuacion += 20;
+                } else if (blocks[pos].getBonus() == 3) {
+                    blocks[pos].setBonus(0);
+                    p.changeLife(1);
+                    puntuacion += 20;
                 }
                 
             }
@@ -284,7 +291,7 @@ void boom(int value) {
 }
 
  void drawMenu() { 
-	char marcador[100];
+	char marcador[200];
 
 	if (b.getSpeed()==0.0 && win == 0 && p.getLife()==3) {
 		sprintf(marcador,"Press Space to launch the ball.");
@@ -293,15 +300,15 @@ void boom(int value) {
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 
         memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"A,J -> Rotate Left          D,L -> Rotate Right");
-		glRasterPos3f(-4.5,-1.0,0);
+		sprintf(marcador,"A,J -> Left          D,L -> Right");
+		glRasterPos3f(-3.3,-1.0,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, marcador[i]);
         
 	} else {
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Life: %d          A,J -> Move Left          D,L -> Move Right", p.getLife());
-		glRasterPos3f(-6.2,-9.8,0);
+		sprintf(marcador,"Life: %d          Score: %d          Level: %d", p.getLife(), puntuacion, lvl);
+		glRasterPos3f(-3.8,-9.8,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, marcador[i]);
 	}
@@ -314,10 +321,29 @@ void boom(int value) {
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Press S to start the game.");
-		glRasterPos3f(-2.5,-1,0);
+		sprintf(marcador,"Your Score: %d.",puntuacion);
+		glRasterPos3f(-1.7,-1,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Life bonus: %d points.",20*p.getLife()*lvl);
+		glRasterPos3f(-2.5,-2,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+        
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press R to start the next level.");
+		glRasterPos3f(-3.5,-4,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+        
+        memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press Esc to close.");
+		glRasterPos3f(-1.7,-5,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+
 	}
 
 	if (p.getLife()==0) {
@@ -327,15 +353,21 @@ void boom(int value) {
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
         
-        memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Press R to restart the game.");
-		glRasterPos3f(-3.0,-1,0);
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Your Score: %d",puntuacion);
+		glRasterPos3f(-2.0,-1,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+        
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press R to start the game.");
+		glRasterPos3f(-3.3,-3,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
         
         memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"Press Esc to close out.");
-		glRasterPos3f(-2.5,-2,0);
+		sprintf(marcador,"Press Esc to close.");
+		glRasterPos3f(-2.5,-4,0);
 		for (int i = 0; i < strlen(marcador); i++)
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 	}
@@ -358,15 +390,15 @@ void render(){
     gameset();
     
     p.drawPlatform();
-    
+
     for(i = 0; i < 35; i++) {
         x = blocks[i].drawBlock();
         if (x==-2 || x==0) {
+            puntuacion += 10;
             win++;
-            if (win == 35)
-                b.setStop(0);
 		}
 		if (x == -2) {
+            puntuacion += 10;
             isAboom = i;
 			xboom = blocks[isAboom].getX();
 			yboom = blocks[isAboom].getY();
@@ -385,17 +417,14 @@ void render(){
     if (-1 == b.drawBall(0.0, 0.0, 0.0)) {
         p.setX(0.0);
         p.changeLife(-1);
-        printf("%d",p.getLife());
-        
-    }
-    
-    //If all the blocks were destroyed
-    if (win == 35) {
-        glBegin(GL_POINTS);
-        glVertex3d(0.0, 0.0, 0.0);
-        glEnd();
+        puntuacion -= 140 + lvl*10;
     }
 
+    if (win == 35) {
+        b.initBall();
+        p.setX(0.0);
+    }
+    
 	drawMenu();
     
     glutSwapBuffers();
@@ -403,11 +432,9 @@ void render(){
 
 void keyboard(unsigned char key, int x, int y){
 
-    if (p.getLife() > 0) {
+    if ((p.getLife() > 0) && (win != 35)) {
             switch(key)
             {
-        //        case GLUT_KEY_LEFT:
-                    
                 case 'a':                       //Rotate first direction of the ball counterclockwise
                 case 'A':                       //Move the platform to the left
                 case 'j':
@@ -417,7 +444,6 @@ void keyboard(unsigned char key, int x, int y){
                     else
                         p.moveX(-0.5);
                     break;
-        //        case GLUT_KEY_RIGHT:
                 case 'd':                       //Rotate first direction of the ball clockwise
                 case 'D':                       //Move the platform to the left
                 case 'l':
@@ -427,8 +453,11 @@ void keyboard(unsigned char key, int x, int y){
                     else
                         p.moveX(0.5);
                     break;
+                case'b':
+                    blocks[o++ % 35].changeLife(-1);
+                    break;
                 case 32:                        //Empezar a mover pelota
-                    if (b.getSpeed() == 0)
+                    if (b.getSpeed() == 0.0)
                         b.resetSpeed();
                     break;
                 case 27:   // escape
@@ -446,6 +475,13 @@ void keyboard(unsigned char key, int x, int y){
                 initRands();
                 b.initBall();
                 p.initPlatform();
+                if (win != 35) {
+                    puntuacion = 0;
+                    lvl = 1;
+                } else if (win == 35) {
+                    puntuacion += 20*p.getLife()*lvl;
+                    lvl++;
+                }
                 win = 0;
                 b.setStop(1);
                 //Blocks Initializing

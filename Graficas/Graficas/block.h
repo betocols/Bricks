@@ -10,7 +10,7 @@ class Block {
     
     int num;        //Id of the block
     int type;       //0 = Normal block / 0 != Special block
-    int bonus;      //0 = Normal block / 1 = Bonus platform size / 2 = Bonus ball speed
+    int bonus;      //0 = Normal block / 1 = Bonus platform size / 2 = Bonus ball speed // 3 = Extra life
     int life;       //Remaining life
     float xpos;     //X position
     float ypos;     //Y position
