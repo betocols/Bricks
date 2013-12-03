@@ -72,6 +72,7 @@ void Ball::drawBall(float x, float y, float r){
 
 void Ball::drawDirection() {
     glPushMatrix();
+    glColor4f(1.0, 1.0, 1.0, 1.0);
     glTranslated(xpos, ypos, 0.0);
     glRotated(rot-90, 0.0, 0.0, 1.0);
     glBegin(GL_LINES);
@@ -184,5 +185,45 @@ void Ball::boing(Platform plat, Block blocks[35]) {
     }
     
     //Blocks
-    
+    float top, right, bottom, left;
+    float blr, bll, blt, blb, cx, cy;
+    for (int k = 0; k < 35; k++) {
+        if ((last != k) && (blocks[k].getLife() > 0)) {
+            //Borders of the ball
+            right = xpos + 0.2;
+            left = xpos - 0.2;
+            top = ypos + 0.2;
+            bottom = ypos - 0.2;
+            
+            //Borders of the block
+            cx = blocks[k].getX();
+            blr = cx + 1.0;
+            bll = cx - 1.0;
+            cy = blocks[k].getY();
+            blt = cy + 0.25;
+            blb = cy - 0.25;
+            
+            //Top and Bottom
+            if (((top >= blb && top <= cy) || (bottom <= blt && bottom >= cy))  && (xpos >= bll && xpos < blr)) {
+                move(-1);
+                rot = 360 - rot;
+                move(1);
+                blocks[k].changeLife(-1);
+                printf("bloque: %d, vida: %d\n", k, blocks[k].getLife());
+                last = k;
+            }
+
+            
+            //Walls
+            if ((bottom <= blt && top >= blb) &&  ((right >= bll && right <= cx) || (left <= blr && left >= cx))) {
+                move(-1);
+                rot = 180 - rot;
+                move(1);
+                printf("bloque: %d, vida: %d\n", k, blocks[k].getLife());
+                blocks[k].changeLife(-1);
+                last = k;
+            }
+
+        }
+    }
 }
