@@ -16,6 +16,7 @@ class Ball {
     float rot;
     float speed;
     int last;
+    int stop;
     
 public:
     
@@ -29,6 +30,9 @@ public:
     void increaseSpeed();
     void resetSpeed();
     
+    void setStop(int s);
+    int getStop();
+    
     float getY();
     float getX();
     
@@ -37,4 +41,5 @@ public:
     
     void move(int direction);
     void boing(Platform plat, Block blocks[35]);
+    void drawDirection();
 };
