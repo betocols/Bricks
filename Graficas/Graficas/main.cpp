@@ -202,13 +202,13 @@ void gotBonus() {
     }
 }
 
-void drawBoom(float cxR, float cyR, float vExp[5][10], float ratio) {
+void drawBoom(float cxR, float cyR) {
     
     glPointSize(5.0);
     glBegin(GL_POINTS);
-//    for (int j= 0; j<10; j++) {
-        glVertex3f( cxR + vExp[1][isAboom] * ratio, cyR + vExp[0][isAboom] * ratio, 0.0 );
-//    }
+	//for (int j= 0; j<10; j++) {
+        glVertex3f( cxR, cyR, 0.0 );
+	//}
     glEnd();
     
 }
@@ -216,7 +216,7 @@ void drawBoom(float cxR, float cyR, float vExp[5][10], float ratio) {
 float t=0.0;
 void boom(int value) {
     
-	float vExp[5][10];
+	float vExp[4][10];
 	float radio = 1.0;
     float cxR, cyR;
     
@@ -258,36 +258,30 @@ void boom(int value) {
         cyR = blocks[isAboom].getY() + (t)*vExp[0][i]*radio;
         cxR = blocks[isAboom].getX() + (t)*vExp[1][i]*radio;
 
+		vExp[2][i] = cyR;
+		vExp[3][i] = cxR;
 
-//        drawBoom(cxR, cyR, vExp, ratio);
-        glPointSize(5.0);
-        glBegin(GL_POINTS);
-        glColor3f(0.0, 1.0, 0.0);
-//        for (int j= 0; j<10; j++) {
-              glVertex3f( cxR, cyR, 0.0 );
-//            printf("posX: %f, posY: %f POSICION DIBUJADA\n\n", cxR + vExp[1][i] * ratio, cyR+ vExp[0][i] * ratio);
-//        }
-        glEnd();
-        
-		
-        
-
-//		printf("cxR: %f, cyR: %f y t: %f iteracion %d\n\n", cxR, cyR, t, i);
-        
 	}
+        //glPointSize(5.0);
+        //glBegin(GL_POINTS);
+        //glColor3f(0.0, 1.0, 0.0);
+        //for (int j= 0; j<10; j++) {
+        //    glVertex3f( vExp[3][j], vExp[2][j], 0.0 );
+        //}
+        //glEnd();
+        
     glutPostRedisplay();
-//    if (t <= 1.0) {
-//        printf("Entre en el if con value= %d, t= %f\n",value,t);
-//        value++;
-//        glutTimerFunc(100000, boom, value);
-//    }
     t += 0.1;
     glutTimerFunc(1000, boom, 0);
     
     if (t == 1.0)
         t = 0.0;
-    
 }
+
+void funcion(Block blocks[35]) {
+	printf("hola");
+}
+
 
 void render(){
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -296,6 +290,7 @@ void render(){
     glLoadIdentity ();
     gluLookAt (0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
+	funcion(blocks);
     
     //Suaviza las lineas
     glEnable(GL_BLEND);
@@ -313,11 +308,7 @@ void render(){
             win++;
             isAboom = i;
             boom(0);
-//            boom(1);
-//            boom(2);
-//            boom(3);
-//            boom(4);
-//            boom(5);
+			
         }
     }
     
@@ -410,7 +401,7 @@ void keyboard(unsigned char key, int x, int y){
 
 void TimeEvent(int value) {
     
-    b.boing(p);
+    b.boing(p, blocks);
     gotBonus();
 	glutPostRedisplay();
 	glutTimerFunc(17, TimeEvent, 1);
