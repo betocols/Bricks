@@ -15,6 +15,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <string.h>
 #include <iostream>
 #include "ball.h"
 
@@ -280,6 +281,30 @@ void boom(int value) {
 	glutTimerFunc(100, boom, 0);
 }
 
+ void drawMenu() { 
+	char marcador[100];
+
+	if (b.getSpeed()==0.0) { 
+		sprintf(marcador,"Press S to start"); 
+		glRasterPos3f(-9,-10,0); 
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+	} else {
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"A -> Move Left D -> Move Right Space -> Launch Ball Life: %d", p.getLife()); 
+		glRasterPos3f(-9,-10,0); 
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+	}
+
+	if (win==35) {
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"You won!!\nPress S to start again", p.getLife()); 
+		glRasterPos3f(0,0,0); 
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+	}
+} 
 
 void render(){
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -329,6 +354,8 @@ void render(){
         glVertex3d(0.0, 0.0, 0.0);
         glEnd();
     }
+
+	drawMenu();
     
     glutSwapBuffers();
 }
