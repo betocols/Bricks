@@ -70,6 +70,10 @@ float Platform::getX() {
     return xpos;
 }
 
+void Platform::setX(int x) {
+    xpos = x;
+}
+
 void Platform::moveX(float x) {
     float t = xpos + x;
     float left = t - size;
@@ -95,7 +99,7 @@ int Platform::getLife() {
 }
 
 void Platform::changeLife(int l) {
-    if ((l == 1) || life == -1) {
+    if ((l == 1) || l == -1) {
         life += l;
     } else {
         life = l;

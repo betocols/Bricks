@@ -284,25 +284,32 @@ void boom(int value) {
  void drawMenu() { 
 	char marcador[100];
 
-	if (b.getSpeed()==0.0) { 
+	if (b.getSpeed()==0.0 && win == 0 && b.getStop() == 0) {
 		sprintf(marcador,"Press S to start"); 
-		glRasterPos3f(-9,-10,0); 
+		glRasterPos3f(-2,0,0);
 		for (int i = 0; i < strlen(marcador); i++)
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
 	} else {
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"A -> Move Left D -> Move Right Space -> Launch Ball Life: %d", p.getLife()); 
-		glRasterPos3f(-9,-10,0); 
+		sprintf(marcador,"Life: %d          A -> Move Left          D -> Move Right          Space -> Launch Ball", p.getLife());
+		glRasterPos3f(-9.2,-9.8,0);
 		for (int i = 0; i < strlen(marcador); i++)
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, marcador[i]);
 	}
 
 	if (win==35) {
 		memset(marcador, 0, sizeof(marcador));
-		sprintf(marcador,"You won!!\nPress S to start again", p.getLife()); 
-		glRasterPos3f(0,0,0); 
+		sprintf(marcador,"You won!!");
+		glRasterPos3f(-1,0,0);
 		for (int i = 0; i < strlen(marcador); i++)
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, marcador[i]); 
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+
+		memset(marcador, 0, sizeof(marcador));
+		sprintf(marcador,"Press S to start again");
+		glRasterPos3f(-2.5,-1,0);
+		for (int i = 0; i < strlen(marcador); i++)
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, marcador[i]);
+
 	}
 } 
 
@@ -346,7 +353,12 @@ void render(){
 	if ((t > -0.1) && (t <= 1.0) && (t != 0.0))
 		drawBoom(vExp);
 
-    b.drawBall(0.0, 0.0, 0.0);
+    if (-1 == b.drawBall(0.0, 0.0, 0.0)) {
+        p.setX(0.0);
+        p.changeLife(-1);
+        printf("%d",p.getLife());
+        
+    }
     
     //If all the blocks were destroyed
     if (win == 35) {

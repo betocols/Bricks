@@ -39,8 +39,9 @@ void Ball::initBall(){
     stop = 0;
 }
 
-void Ball::drawBall(float x, float y, float r){
+int Ball::drawBall(float x, float y, float r){
     float radio = 0.20;
+    int perdio = 0;
     
     glPushMatrix();
 
@@ -57,6 +58,7 @@ void Ball::drawBall(float x, float y, float r){
 
     //If it goes out
     if (ypos <= -10) {
+        perdio = -1;
         initBall();
     }
 
@@ -68,6 +70,9 @@ void Ball::drawBall(float x, float y, float r){
     glEnd();
     
     glPopMatrix();
+    
+    return perdio;
+
 }
 
 void Ball::drawDirection() {
@@ -221,7 +226,6 @@ void Ball::boing(Platform plat, Block blocks[35]) {
                 blocks[k].changeLife(-1);
                 last = k;
             }
-
         }
     }
 }

@@ -21,6 +21,7 @@ public:
     void resetSize();
     
     float getX();
+    void setX(int x);
     void moveX(float x);
     
     int getLife();

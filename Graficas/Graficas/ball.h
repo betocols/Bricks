@@ -24,7 +24,7 @@ public:
     ~Ball();    //Destructor
 
     void initBall();
-    void drawBall(float x, float y, float r);
+    int drawBall(float x, float y, float r);
 
     float getSpeed();
     void increaseSpeed();
