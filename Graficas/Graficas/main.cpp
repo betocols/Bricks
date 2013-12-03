@@ -28,8 +28,10 @@ int special[7];                     //Array to obtain the number of the especial
 int bonus[5];                       //Array to obtain the number of the bonus blocks
 Platform p;
 Ball b;
-int i = 0, isAboom = 0, x, o = 0;
+int i = 0, isAboom = 0, x, o = 0, stop = 0;
 int win = 0;
+float t=0.0, xboom = 0.0, yboom = 0.0;
+float vExp[4][10]; ///Array to obtain the positions of the boom
 
 void changeViewport(int w, int h) {
     
@@ -202,84 +204,42 @@ void gotBonus() {
     }
 }
 
-void drawBoom(float cxR, float cyR) {
+void drawBoom(float v[4][10]) {
     
     glPointSize(5.0);
     glBegin(GL_POINTS);
-	//for (int j= 0; j<10; j++) {
-        glVertex3f( cxR, cyR, 0.0 );
-	//}
+	for (int j= 0; j<10; j++) {
+        glVertex3f( v[3][j], v[2][j], 0.0 );
+	}
     glEnd();
     
 }
 
-float t=0.0;
 void boom(int value) {
-    
-	float vExp[4][10];
+ 
+	
 	float radio = 1.0;
-    float cxR, cyR;
-    
-    vExp[0][0] = sin(gradToRad(15.0));
-    vExp[1][0] = cos(gradToRad(15.0));
-    
-    vExp[0][1] = sin(gradToRad(255.0));
-    vExp[1][1] = cos(gradToRad(255.0));
-    
-    vExp[0][2] = sin(gradToRad(127.0));
-    vExp[1][2] = cos(gradToRad(127.0));
-    
-    vExp[0][3] = sin(gradToRad(90.0));
-    vExp[1][3] = cos(gradToRad(90.0));
-    
-    vExp[0][4] = sin(gradToRad(180.0));
-    vExp[1][4] = cos(gradToRad(180.0));
-    
-    vExp[0][5] = sin(gradToRad(270.0));
-    vExp[1][5] = cos(gradToRad(270.0));
-    
-    vExp[0][6] = sin(gradToRad(45.0));
-    vExp[1][6] = cos(gradToRad(45.0));
-    
-    vExp[0][7] = sin(gradToRad(325.0));
-    vExp[1][7] = cos(gradToRad(325.0));
-    
-    vExp[0][8] = sin(gradToRad(73.0));
-    vExp[1][8] = cos(gradToRad(73.0));
-    
-    vExp[0][9] = sin(gradToRad(225.0));
-    vExp[1][9] = cos(gradToRad(225.0));
-    
-	cxR = blocks[isAboom].getX();
-	cyR = blocks[isAboom].getY();
-    
+	float cxR, cyR;
+
 	for(int i=0; i<10; i++){
         
-        cyR = blocks[isAboom].getY() + (t)*vExp[0][i]*radio;
-        cxR = blocks[isAboom].getX() + (t)*vExp[1][i]*radio;
+		cyR = yboom + (t)*vExp[0][i]*radio;
+		cxR = xboom + (t)*vExp[1][i]*radio;
 
 		vExp[2][i] = cyR;
 		vExp[3][i] = cxR;
 
 	}
-        //glPointSize(5.0);
-        //glBegin(GL_POINTS);
-        //glColor3f(0.0, 1.0, 0.0);
-        //for (int j= 0; j<10; j++) {
-        //    glVertex3f( vExp[3][j], vExp[2][j], 0.0 );
-        //}
-        //glEnd();
         
-    glutPostRedisplay();
-    t += 0.1;
-    glutTimerFunc(1000, boom, 0);
-    
-    if (t == 1.0)
-        t = 0.0;
-}
+	glutPostRedisplay();
+	t += 0.1;
 
-void funcion(Block blocks[35]) {
-	printf("hola");
+	if (t >= 1.0) {
+		t = -0.1;
+		return;
+
+	}
+	glutTimerFunc(100, boom, 0);
 }
 
 
@@ -289,9 +249,7 @@ void render(){
     
     glLoadIdentity ();
     gluLookAt (0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    
-	funcion(blocks);
-    
+ 
     //Suaviza las lineas
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -307,11 +265,16 @@ void render(){
         if (x==-2 || x==0) {
             win++;
             isAboom = i;
+			xboom = blocks[isAboom].getX();
+			yboom = blocks[isAboom].getY();
+			t += 0.1;
             boom(0);
-			
-        }
+		}
     }
-    
+
+	if ((t > -0.1) && (t <= 1.0))
+		drawBoom(vExp);
+
     b.drawBall(0.0, 0.0, 0.0);
     
     //If all the blocks were destroyed
@@ -438,6 +401,36 @@ int main (int argc, char** argv) {
             i++;
         }
     }
+
+	vExp[0][0] = sin(gradToRad(15.0));
+    vExp[1][0] = cos(gradToRad(15.0));
+    
+    vExp[0][1] = sin(gradToRad(255.0));
+    vExp[1][1] = cos(gradToRad(255.0));
+    
+    vExp[0][2] = sin(gradToRad(127.0));
+    vExp[1][2] = cos(gradToRad(127.0));
+    
+    vExp[0][3] = sin(gradToRad(90.0));
+    vExp[1][3] = cos(gradToRad(90.0));
+    
+    vExp[0][4] = sin(gradToRad(180.0));
+    vExp[1][4] = cos(gradToRad(180.0));
+    
+    vExp[0][5] = sin(gradToRad(270.0));
+    vExp[1][5] = cos(gradToRad(270.0));
+    
+    vExp[0][6] = sin(gradToRad(45.0));
+    vExp[1][6] = cos(gradToRad(45.0));
+    
+    vExp[0][7] = sin(gradToRad(325.0));
+    vExp[1][7] = cos(gradToRad(325.0));
+    
+    vExp[0][8] = sin(gradToRad(73.0));
+    vExp[1][8] = cos(gradToRad(73.0));
+    
+    vExp[0][9] = sin(gradToRad(225.0));
+    vExp[1][9] = cos(gradToRad(225.0));
     
     glutTimerFunc(17, TimeEvent, 1);
     glutMainLoop();
