@@ -225,7 +225,6 @@ int Block::drawBlock(){
     }
     
     if (life == 0) {
-        life--;
 		if (type == 1)
             return -2;
         return 0;
